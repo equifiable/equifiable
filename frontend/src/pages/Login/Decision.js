@@ -1,4 +1,3 @@
-// LoginPage.js
 import React from 'react';
 import './Decision.css';
 
@@ -10,12 +9,8 @@ import './Decision.css';
 const LoginPage = () => {
   return (
     <div className="container">
+      <img className="top-image" src={require('../../assets/logo.png').default} alt="Uber Logo" />
       <h1 className="header">Log in to access your account</h1>
-      <div className="profile-pictures">
-        {/* You'll replace the src with the path to your image assets */}
-        <img className="profile-picture" src={require('../../assets/logo.png').default} alt="Driver" />
-        <img className="profile-picture" src={require('../../assets/logo.png').default} alt="Rider" />
-      </div>
       <div className="role-selector">
         <div className="role-item">
           Driver
