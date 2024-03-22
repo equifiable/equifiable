@@ -1,0 +1,16 @@
+archetype nftForSale(owner : address, metadata: string)
+
+variable price : tez = 0tz
+
+entry setPrice(newPrice : tez) {
+  called by owner
+  effect { price := newPrice; }
+}
+
+entry buy() {
+  require { r1 : transferred = price }
+  effect {
+      transfer price to owner;
+      owner := caller;
+  }
+}
