@@ -13,11 +13,11 @@ const LoginPage = () => {
       <h1 className="header">Log in to access your account</h1>
       <div className="role-selector">
         <div className="role-item">
-          Driver
+          Employee
           <span className="arrow">→</span>
         </div>
         <div className="role-item">
-          Rider
+          Company
           <span className="arrow">→</span>
         </div>
       </div>
