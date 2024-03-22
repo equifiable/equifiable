@@ -13,8 +13,8 @@ const LoginPage = () => {
       <h1 className="header">Log in to access your account</h1>
       <div className="profile-pictures">
         {/* You'll replace the src with the path to your image assets */}
-        <img className="profile-picture" src="src/assets/logo.png" alt="Driver" />
-        <img className="profile-picture" src="src/assets/logo.png" alt="Rider" />
+        <img className="profile-picture" src={require('../../assets/logo.png').default} alt="Driver" />
+        <img className="profile-picture" src={require('../../assets/logo.png').default} alt="Rider" />
       </div>
       <div className="role-selector">
         <div className="role-item">
