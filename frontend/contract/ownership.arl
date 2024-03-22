@@ -1,0 +1,48 @@
+archetype asset_ownership(owner : address)
+
+variable assetid : bytes =
+  0x68746ecbcd72793aefda48f1b67a3190fc380a7633055d2336fb90cd990582a2
+
+variable bestbidder : address = owner
+variable bestbid    : tez = 0tz
+
+variable endofbid : option<date> = none
+
+states =
+| Owned initial
+| ForSale
+
+transition upforsale (price : tez) {
+   called by owner
+   from Owned to ForSale
+   with effect {
+      bestbid := price;
+      endofbid := some((now + 5m));
+   }
+}
+
+entry bid() {
+   state is ForSale otherwise "Asset Not For Sale"
+   require {
+      r1: endofbid ? now < the : false otherwise "Bid Period Is Over";
+      r2: caller <> bestbidder         otherwise "Called By Best Bidder";
+      r3: transferred > bestbid        otherwise "Invalid Transferred Amount";
+   }
+   effect {
+     if balance <> transferred then
+       transfer bestbid to bestbidder;
+     bestbidder := caller;
+     bestbid := transferred;
+     endofbid := some((now + 2m));
+   }
+}
+
+transition claim () {
+  require { r5: endofbid ? now > the : false otherwise "Bid Period Is Still On" }
+  from ForSale to Owned
+  with effect {
+     if balance > 0tz then
+         transfer balance to owner;
+     owner := bestbidder;
+  }
+}
