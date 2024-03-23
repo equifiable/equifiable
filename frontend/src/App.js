@@ -108,21 +108,23 @@ function App() {
     // </ThemeProvider>
     // </SettingsProvider>
     // </DAppProvider>
-    <Router>
-      <Routes>
-        <Route path="/" element={<DecisionPage />} />
-        <Route path="/decision" element={<DecisionPage />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/signup_company" element={<SignUpCompany />} />
-        <Route path="/login_company" element={<LogInCompany />} />
-        <Route path="/employee/createesop" element={<CreateESOP />} />
-        <Route path="/company/createstock" element={<CreateShare />} />
-        <Route path="/company/dashboard" element={<CompanyDashboard />} />
-        <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
-        
-      </Routes>
-    </Router>
+    <DAppProvider appName='equifiable'>
+      <Router>
+        <Routes>
+          <Route path="/" element={<DecisionPage />} />
+          <Route path="/decision" element={<DecisionPage />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/signup_company" element={<SignUpCompany />} />
+          <Route path="/login_company" element={<LogInCompany />} />
+          <Route path="/company/createesop" element={<CreateESOP />} />
+          <Route path="/company/createstock" element={<CreateShare />} />
+          <Route path="/company/dashboard" element={<CompanyDashboard />} />
+          <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
+          
+        </Routes>
+      </Router>
+    </DAppProvider>
   );
 }
 

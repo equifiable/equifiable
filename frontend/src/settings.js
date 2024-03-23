@@ -5,7 +5,7 @@ export function useSettings() {
 
   const [settings,setState] = useState({
     network  : 'ghostnet',
-    endpoint : 'https://ghostnet.ecadinfra.com',
+    endpoint : 'https://rpc.ghostnet.teztnets.com',
     contract : '',
     show     : false,
   });

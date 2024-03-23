@@ -2,6 +2,10 @@ import React from 'react';
 import {AppBar, Toolbar } from '@material-ui/core';
 import logo from '../assets/logo_no_text.png'; // Import your logo image
 import { makeStyles } from '@material-ui/core/styles';
+import { useTezos, useAccountPkh } from '../dappstate';
+import { IconButton } from '@mui/material';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -42,11 +46,22 @@ const useStyles = makeStyles((theme) => ({
 
 function MenuBar() {
   const classes = useStyles();
+  const account = useAccountPkh(); 
+  const navigate = useNavigate();
+
+  const logout = () => {
+    localStorage.removeItem("account");
+    navigate("/");
+  }
 
   return (
     <AppBar position="absolute" color="default" className={classes.appBar}>
         <Toolbar>
             <img className="top-image" src={logo} alt="Logo" style={{ width: '70px', height: 'auto' }}/>
+            {account != undefined && `${account}`}
+            <IconButton aria-label="delete" onClick={logout}>
+              <ExitToAppIcon />
+          </IconButton>
         </Toolbar>
     </AppBar>
   );

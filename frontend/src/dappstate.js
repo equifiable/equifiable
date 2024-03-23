@@ -22,7 +22,7 @@ function useDApp({ appName }) {
   const [{ wallet, tezos, accountPkh }, setState] = React.useState(() => ({
     wallet: null,
     tezos: null,
-    accountPkh: null,
+    accountPkh: localStorage.getItem("account")
   }));
 
   const ready = Boolean(tezos);
@@ -32,7 +32,7 @@ function useDApp({ appName }) {
       setState({
         wallet: available ? new TempleWallet(appName) : null,
         tezos: null,
-        accountPkh: null,
+        accountPkh: localStorage.getItem("account"),
       });
     });
   }, [setState, appName]);
@@ -51,6 +51,8 @@ function useDApp({ appName }) {
           tezos: tzs,
           accountPkh: pkh,
         });
+        localStorage.setItem("account", pkh);
+
       } catch (err) {
         alert(`Failed to connect to Temple Wallet: ${err.message}`);
       }
