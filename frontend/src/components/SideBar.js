@@ -6,12 +6,12 @@ function Sidebar() {
     <div className="sidebar">
       <ul className="sidebar-nav">
         <li className="sidebar-item">
-          <a href="#" className="sidebar-link">
+          <a href="/company/createESOP" className="sidebar-link">
             Create ESOP
           </a>
         </li>
         <li className="sidebar-item">
-          <a href="#" className="sidebar-link">
+          <a href="/company/dashboard" className="sidebar-link">
             Dashboard
           </a>
         </li>

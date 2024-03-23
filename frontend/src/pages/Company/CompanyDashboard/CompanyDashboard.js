@@ -3,6 +3,7 @@ import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import './CompanyDashboard.css';
 import MenuBar from '../../../components/MenuBar';
+import Sidebar from '../../../components/SideBar';
 
 Chart.register(...registerables);
 
@@ -91,6 +92,7 @@ const CompanyDashboard = () => {
   return (
     <>
       <MenuBar />
+      <Sidebar/>
       <h2>Dashboard Title</h2>
       <p>This is an example text placed above the table.</p>
       <div>
