@@ -1,0 +1,102 @@
+
+archetype subscription(const owner : address)
+
+variable MONTH_PRICE : tez = 1.5tz
+variable YEAR_PRICE : tez = 15tz
+variable year : duration = 365d
+variable month: duration = 30d
+
+asset User {
+  user          : address;
+  subType       : int;
+  termStart     : date;
+  nextPayment   : date;
+}
+
+entry subscribe(tokenID: int ) {
+
+    effect {
+
+        var flag : bool = false;
+        var nextPaymentsub: date = now;
+
+        if (tokenID = 1) then 
+            if (transferred = MONTH_PRICE) then begin
+                nextPaymentsub := now + month;
+                flag:=true                
+            end;
+
+        if (tokenID = 2) then 
+            if (transferred = YEAR_PRICE) then begin
+                nextPaymentsub := now + year;
+                flag:=true                
+            end;
+           
+        if not flag then
+            fail("Not good value for this package");
+
+        if(User.contains(caller)) then
+            fail("You already have an account!")
+        else begin
+            User.add({
+                user = caller;
+                subType = tokenID;
+                termStart = now;
+                nextPayment = nextPaymentsub
+                });
+            transfer transferred to owner;
+        end       
+
+        
+    }
+}
+
+function  checkStatus() : bool {    
+    
+    if (now > User[caller].nextPayment+10d) then begin
+        return false
+    end else
+        return true   
+        
+    
+}
+entry payBill() {
+
+        require{r2 : User.contains(caller) otherwise "User not found!";
+                r3 : checkStatus() otherwise "Payment is late -  you lost your account"}
+        
+        effect{
+
+            var flag : bool = false;
+            var nextPaymentpay: date = now;
+
+            if (User[caller].subType = 1) then 
+                if (transferred = MONTH_PRICE) then begin
+                    nextPaymentpay := now + month;
+                    flag:=true                
+            end;
+
+            if (User[caller].subType = 2) then 
+                if (transferred = YEAR_PRICE) then begin
+                    nextPaymentpay := now + year;
+                    flag:=true                
+                end;
+            
+            if not flag then
+                fail("Not good value for this package")
+            else begin                
+                User[caller].nextPayment := nextPaymentpay;
+                transfer transferred to owner
+            end;
+        }
+}
+
+entry cancelSubscription() {
+        require{r4: User.contains(caller) otherwise "User not found!"}
+        effect{
+            User.remove(caller);
+        }
+}
+
+
+
