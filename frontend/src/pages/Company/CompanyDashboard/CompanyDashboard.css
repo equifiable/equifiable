@@ -148,4 +148,56 @@
   .additionalInfo p:last-child {
     margin-bottom: 0;
   }
+
+
+  .actionContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+    background-color: #f2f2f7; /* A light grey background for slight contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+.numericInput {
+    font-size: 16px;
+    padding: 10px;
+    border: 1px solid #d1d1d6; /* Slightly darker border for definition */
+    border-radius: 8px;
+    outline: none; /* Removes default focus outline */
+    width: 100px; /* Fixed width for consistency */
+    background-color: white; /* Ensures background consistency */
+    text-align: center; /* Centers text for a clean look */
+}
+
+.numericInput:focus {
+    border-color: #007aff; /* Blue border on focus, typical iOS accent color */
+    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.25); /* Soft glow effect for focus */
+}
+
+.executeButton {
+    background-color: #007aff; /* iOS blue for primary actions */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer; /* Indicates interactivity */
+    transition: background-color 0.3s ease; /* Smooth transition for interaction */
+}
+
+.executeButton:hover {
+    background-color: #005ecb; /* Slightly darker on hover for feedback */
+}
+
+.executeButton:active {
+    background-color: #004ba0; /* Even darker on click for tactile feedback */
+}
+
+.executeButton:focus {
+    outline: none; /* Removes default focus outline, but consider accessibility alternatives */
+    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.5); /* Focus glow for accessibility */
+}
+
   
