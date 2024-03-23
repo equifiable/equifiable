@@ -29,7 +29,7 @@ import LogIn from './pages/Login/LogIn'
 import SignUp from './pages/Login/SignUp.js';
 import CreateESOP from './pages/Company/CreateESOP/CreateESOP.js';
 import CreateShare from './pages/Company/CreateShare/CreateStock.js';
-import Dashbord from './pages/Company/Dashboard/Dashboard.js';
+import Dashboard from './pages/Company/Dashboard/Dashboard.js';
 
 /* FIXME: Step 3.1 */
 
