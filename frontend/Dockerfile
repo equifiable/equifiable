@@ -17,7 +17,7 @@ RUN apt-get update && \
     gnupg
 
 # Add Node.js repository and install Node.js
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs
 
 # Display Node.js and npm versions
@@ -34,8 +34,7 @@ COPY package*.json ./
 # Install app dependencies
 RUN npm install
 
-# Copy the rest of the application code
-COPY . .
+WORKDIR /usr/src/app
 
 # Expose the port where the app runs
 EXPOSE 3000
