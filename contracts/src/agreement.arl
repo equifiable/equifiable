@@ -16,14 +16,14 @@ variable termination_date : option<date> = none
 variable terminated : bool = false
 variable closed : bool = false
 
-function isStillValid(d : date) : bool {
-    var beforeExpirationDate : bool = d <= expiration_date;
+function isExpired() : bool {
+    var beforeExpirationDate : bool = now <= expiration_date;
     var beforePTEP : bool = match termination_date with
-    | some(tDate) -> d <= tDate + post_termination_exercise_window*1d
-    | none        -> false
+    | some(tDate) -> now <= tDate + post_termination_exercise_window*1d
+    | none        -> true
     end;
-    var stillValid : bool = beforeExpirationDate and (not terminated or beforePTEP);
-    return stillValid
+    var stillValid : bool = beforeExpirationDate and beforePTEP;
+    return (not stillValid)
 }
 
 function calculateBalance() :  balances {
@@ -31,7 +31,12 @@ function calculateBalance() :  balances {
     var granted_tokens : nat = 0;
 
     for pair in vesting do
-        vested_tokens += (isStillValid(pair[0])) ? pair[1] : 0;
+        var beforeTermination : bool = match termination_date with
+        | some(tDate) -> pair[0] <= tDate
+        | none        -> true
+        end;
+        var vested : bool = pair[0] < now and beforeTermination;
+        vested_tokens += (vested) ? pair[1] : 0;
         granted_tokens += pair[1];
     done;
 
@@ -49,7 +54,7 @@ function calculateBalance() :  balances {
 entry execute(amount : nat) {
     called by recipient
     require {
-        r1 : isStillValid(now) otherwise "Expired";
+        r1 : not isExpired() otherwise "Expired";
         r2: transferred = amount*strike_price
     }
     effect {
@@ -82,7 +87,7 @@ entry terminate() {
 
 entry retrieveExpiredShares() {
     require {
-        isExpired : not isStillValid(now) otherwise "NotExpired";
+        r3 : isExpired() otherwise "NotExpired";
         stillOpen : not closed otherwise "AlreadyClosed"
     }
     effect {
