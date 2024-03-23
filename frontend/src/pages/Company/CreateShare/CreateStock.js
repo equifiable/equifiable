@@ -88,11 +88,11 @@ export default function CreateESOP() {
       <main className={classes.layout}>
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h4" align="center">
-            Create Stock Option Agreement
+            Create Stock
           </Typography>
           <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Employee Information
+        Stock address
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
@@ -120,7 +120,7 @@ export default function CreateESOP() {
             required
             id="employee_address"
             name="address1"
-            label="Employee address"
+            label="Stock address"
             fullWidth
             autoComplete="shipping address-line1"
           />
