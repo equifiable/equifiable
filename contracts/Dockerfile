@@ -15,6 +15,8 @@ RUN wget -O /usr/bin/archetype-x64-linux https://github.com/completium/archetype
     completium-cli set binary path archetype /usr/bin/archetype-x64-linux && \
     completium-cli set mode archetype binary
 
+RUN chmod +x /usr/bin/archetype-x64-linux && npm install n -g && n stable
+
 # RUN apt install python3.10 pip
 
 # RUN pip3 install https://smartpy.io/static/tezos_smartpy-0.19.1-py3-none-any.whl

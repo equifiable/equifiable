@@ -1,0 +1,47 @@
+archetype factory(owner : address, price : tez)
+
+import "agreement.arl"
+
+entry setPrice(newPrice : tez) {
+    called by owner
+    effect {
+        price := newPrice
+    }
+}
+
+entry create(
+    share_address : address, 
+    recipient : address, 
+    company_address : address, 
+    expiration_date : date, 
+    strike_price : tez,
+    vesting : list<date * nat>,
+    post_termination_exercise_window : nat) {
+    called by company_address
+    require {
+        r1 : transferred = price otherwise "InsufficientTransfer"
+    }
+    effect {
+        // Create agreement
+        const agreement_op_address : (operation * address) = create_contract(agreement, none, 0tz, {
+            share_address = share_address;
+            recipient = recipient;
+            company_address = company_address;
+            expiration_date = expiration_date;
+            strike_price = strike_price;
+            vesting = vesting;
+            post_termination_exercise_window = post_termination_exercise_window
+        });
+        operations := [agreement_op_address[0]];
+
+        // Lock the total number of share tokens to the agreement
+        var granted_tokens : nat = 0;
+        for pair in vesting do
+            granted_tokens += pair[1];
+        done;
+        transfer 0tz to share_address call %transfer<address * address * nat>((company_address, agreement_op_address[1], granted_tokens));
+        
+        // Transfer the required fee
+        transfer transferred to owner;
+    }
+}
