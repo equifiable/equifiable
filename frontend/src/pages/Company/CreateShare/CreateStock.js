@@ -91,9 +91,7 @@ export default function CreateESOP() {
             Create Stock
           </Typography>
           <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-        Stock address
-      </Typography>
+   
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           {/* <TextField
@@ -120,7 +118,7 @@ export default function CreateESOP() {
             required
             id="employee_address"
             name="address1"
-            label="Stock address"
+            label="Total supply"
             fullWidth
             autoComplete="shipping address-line1"
           />

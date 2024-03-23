@@ -113,7 +113,7 @@ function App() {
         <Route path="/decision" element={<DecisionPage />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/employee/createesop" element={<CreateESOP />} />
-        <Route path="/employee/createstock" element={<CreateShare />} />
+        <Route path="/company/createstock" element={<CreateShare />} />
         <Route path="/company/dashboard" element={<CompanyDashboard />} />
         <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
         
