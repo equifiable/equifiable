@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - 8000:8000
+    volumes:
+      - ${PWD}/credentials:/credentials/
