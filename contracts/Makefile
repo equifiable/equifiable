@@ -10,3 +10,9 @@ init:
 	octez-client remember contract contact1 $(CONTACT1_KEY)
 	octez-client remember contract contact2 $(CONTACT2_KEY)
 	completium-cli import privatekey $(PRIVATE_KEY) as myself
+
+test:
+	npm run gen-binding
+	completium-cli set endpoint mockup
+	completium-cli mockup init
+	npm run test

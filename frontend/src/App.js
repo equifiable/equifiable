@@ -29,7 +29,8 @@ import LogIn from './pages/Login/LogIn'
 import SignUp from './pages/Login/SignUp.js';
 import CreateESOP from './pages/Company/CreateESOP/CreateESOP.js';
 import CreateShare from './pages/Company/CreateShare/CreateStock.js';
-import Dashboard from './pages/Company/Dashboard/Dashboard.js';
+import CompanyDashboard from './pages/Company/CompanyDashboard/CompanyDashboard.js';
+import EmployeeDashboard from './pages/Employee/EmployeeDashboard/EmployeeDashboard.js';
 
 /* FIXME: Step 3.1 */
 
@@ -111,9 +112,10 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/decision" element={<DecisionPage />} />
         <Route path="/login" element={<LogIn />} />
-        <Route path="/createesop" element={<CreateESOP />} />
-        <Route path="/createstock" element={<CreateShare />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/employee/createesop" element={<CreateESOP />} />
+        <Route path="/employee/createstock" element={<CreateShare />} />
+        <Route path="/company/dashboard" element={<CompanyDashboard />} />
+        <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
         
       </Routes>
     </Router>

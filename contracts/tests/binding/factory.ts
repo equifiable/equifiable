@@ -1,12 +1,33 @@
 import * as ex from "@completium/experiment-ts";
 import * as att from "@completium/archetype-ts-types";
+export class agreement__balances implements att.ArchetypeType {
+    constructor(public granted: att.Nat, public future: att.Nat, public available: att.Nat, public exercised: att.Nat) { }
+    toString(): string {
+        return JSON.stringify(this, null, 2);
+    }
+    to_mich(): att.Micheline {
+        return att.pair_to_mich([this.granted.to_mich(), this.future.to_mich(), this.available.to_mich(), this.exercised.to_mich()]);
+    }
+    equals(v: agreement__balances): boolean {
+        return att.micheline_equals(this.to_mich(), v.to_mich());
+    }
+    static from_mich(input: att.Micheline): agreement__balances {
+        return new agreement__balances(att.Nat.from_mich((input as att.Mpair).args[0]), att.Nat.from_mich((input as att.Mpair).args[1]), att.Nat.from_mich((input as att.Mpair).args[2]), att.Nat.from_mich((input as att.Mpair).args[3]));
+    }
+}
+export const agreement__balances_mich_type: att.MichelineType = att.pair_array_to_mich_type([
+    att.prim_annot_to_mich_type("nat", ["%granted"]),
+    att.prim_annot_to_mich_type("nat", ["%future"]),
+    att.prim_annot_to_mich_type("nat", ["%available"]),
+    att.prim_annot_to_mich_type("nat", ["%exercised"])
+], []);
 const setPrice_arg_to_mich = (newPrice: att.Tez): att.Micheline => {
     return newPrice.to_mich();
 }
 const create_arg_to_mich = (share_address: att.Address, recipient: att.Address, company_address: att.Address, expiration_date: Date, strike_price: att.Tez, vesting: Array<[
     Date,
     att.Nat
-]>): att.Micheline => {
+]>, post_termination_exercise_window: att.Nat): att.Micheline => {
     return att.pair_to_mich([
         share_address.to_mich(),
         recipient.to_mich(),
@@ -15,7 +36,8 @@ const create_arg_to_mich = (share_address: att.Address, recipient: att.Address, 
         strike_price.to_mich(),
         att.list_to_mich(vesting, x => {
             return att.pair_to_mich([att.date_to_mich(x[0]), x[1].to_mich()]);
-        })
+        }),
+        post_termination_exercise_window.to_mich()
     ]);
 }
 export class Factory {
@@ -51,9 +73,9 @@ export class Factory {
     async create(share_address: att.Address, recipient: att.Address, company_address: att.Address, expiration_date: Date, strike_price: att.Tez, vesting: Array<[
         Date,
         att.Nat
-    ]>, params: Partial<ex.Parameters>): Promise<att.CallResult> {
+    ]>, post_termination_exercise_window: att.Nat, params: Partial<ex.Parameters>): Promise<att.CallResult> {
         if (this.address != undefined) {
-            return await ex.call(this.address, "create", create_arg_to_mich(share_address, recipient, company_address, expiration_date, strike_price, vesting), params);
+            return await ex.call(this.address, "create", create_arg_to_mich(share_address, recipient, company_address, expiration_date, strike_price, vesting, post_termination_exercise_window), params);
         }
         throw new Error("Contract not initialised");
     }
@@ -66,9 +88,9 @@ export class Factory {
     async get_create_param(share_address: att.Address, recipient: att.Address, company_address: att.Address, expiration_date: Date, strike_price: att.Tez, vesting: Array<[
         Date,
         att.Nat
-    ]>, params: Partial<ex.Parameters>): Promise<att.CallParameter> {
+    ]>, post_termination_exercise_window: att.Nat, params: Partial<ex.Parameters>): Promise<att.CallParameter> {
         if (this.address != undefined) {
-            return await ex.get_call_param(this.address, "create", create_arg_to_mich(share_address, recipient, company_address, expiration_date, strike_price, vesting), params);
+            return await ex.get_call_param(this.address, "create", create_arg_to_mich(share_address, recipient, company_address, expiration_date, strike_price, vesting, post_termination_exercise_window), params);
         }
         throw new Error("Contract not initialised");
     }

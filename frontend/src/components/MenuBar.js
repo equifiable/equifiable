@@ -46,7 +46,7 @@ function MenuBar() {
   return (
     <AppBar position="absolute" color="default" className={classes.appBar}>
         <Toolbar>
-            <img className="top-image" src={logo} alt="Uber Logo" style={{ width: '70px', height: 'auto' }}/>
+            <img className="top-image" src={logo} alt="Logo" style={{ width: '70px', height: 'auto' }}/>
         </Toolbar>
     </AppBar>
   );
