@@ -1,5 +1,6 @@
 import './App.css';
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -23,6 +24,8 @@ import Button from '@mui/material/Button';
 import { useTezos, useAccountPkh } from './dappstate';
 import { useSnackContext } from './snackstate';
 import { UnitValue } from '@taquito/taquito';
+import DecisionPage from './pages/Login/Decision.js';
+import LogIn from './pages/Login/LogIn'
 
 /* FIXME: Step 3.1 */
 
@@ -38,52 +41,59 @@ function App() {
     },
   });
   return (
-    <DAppProvider appName={ appName }>
-    <SettingsProvider>
-    <ThemeProvider theme={ theme }>
-    <SnackProvider>
-      <CssBaseline />
-      <div className="App">
-        <Container style={{ marginTop: 50 }}>
-          <Grid container spacing={3}>
-            { /* FIXME: Step 3.2 Start */ }
-            <Grid item xs={12}>
-              <Typography variant="h2" style={{ fontFamily : alegreya }}>
-                Completium
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h6">
-                Edit <code>src/App.js</code> and save to reload. Testing if it works!!!!
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Link
-                href="https://completium.com/dapps"
-                target="_blank" rel="noopener noreferrer"
-                style={{ color: theme.palette.primary.light }}
-              >
-                <Typography variant="h6">
-                  Learn everything about DApps
-                </Typography>
-              </Link>
-            </Grid>
-            { /* FIXME: Step 3.2 End */ }
+    // <DAppProvider appName={ appName }>
+    // <SettingsProvider>
+    // <ThemeProvider theme={ theme }>
+    // <SnackProvider>
+    //   <CssBaseline />
+    //   <div className="App">
+    //     <Container style={{ marginTop: 50 }}>
+    //       <Grid container spacing={3}>
+    //         { /* FIXME: Step 3.2 Start */ }
+    //         <Grid item xs={12}>
+    //           <Typography variant="h2" style={{ fontFamily : alegreya }}>
+    //             Completium
+    //           </Typography>
+    //         </Grid>
+    //         <Grid item xs={12}>
+    //           <Typography variant="h6">
+    //             Edit <code>src/App.js</code> and save to reload. Testing if it works!!!!
+    //           </Typography>
+    //         </Grid>
+    //         <Grid item xs={12}>
+    //           <Link
+    //             href="https://completium.com/dapps"
+    //             target="_blank" rel="noopener noreferrer"
+    //             style={{ color: theme.palette.primary.light }}
+    //           >
+    //             <Typography variant="h6">
+    //               Learn everything about DApps
+    //             </Typography>
+    //           </Link>
+    //         </Grid>
+    //         { /* FIXME: Step 3.2 End */ }
 
-            { /* FIXME: Step 4.2 */ }
+    //         { /* FIXME: Step 4.2 */ }
 
-            { /* FIXME: Step 6.2 */ }
+    //         { /* FIXME: Step 6.2 */ }
 
-            { /* FIXME: Step 4.3 */ }
-          </Grid>
-        </Container>
-      </div>
-      <SettingsPanel/>
-      <Snack />
-    </SnackProvider>
-    </ThemeProvider>
-    </SettingsProvider>
-    </DAppProvider>
+    //         { /* FIXME: Step 4.3 */ }
+    //       </Grid>
+    //     </Container>
+    //   </div>
+    //   <SettingsPanel/>
+    //   <Snack />
+    // </SnackProvider>
+    // </ThemeProvider>
+    // </SettingsProvider>
+    // </DAppProvider>
+    <Router>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/decision" element={<DecisionPage />} />
+        <Route path="/login" element={<LogIn />} />
+      </Routes>
+    </Router>
   );
 }
 
