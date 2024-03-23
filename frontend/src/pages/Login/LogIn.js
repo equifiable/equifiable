@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Hyperlink from '../../components/HyperLink';
+import MenuBar from '../../components/MenuBar';
 
 
 function Copyright(props) {
@@ -44,6 +45,7 @@ export default function LogIn() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      <MenuBar/>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

@@ -14,6 +14,8 @@ import Review from '../../../components/Review';
 import AddressForm from '../../../components/AddressForm';
 import PaymentForm from '../../../components/PaymentForm';
 import MenuBar from '../../../components/MenuBar';
+import { Grid } from "@material-ui/core";
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -88,45 +90,43 @@ export default function CreateESOP() {
           <Typography component="h1" variant="h4" align="center">
             Create Stock Option Agreement
           </Typography>
-          <Stepper activeStep={activeStep} className={classes.stepper}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
           <React.Fragment>
-            {activeStep === steps.length ? (
-              <React.Fragment>
-                <Typography variant="h5" gutterBottom>
-                  Thank you for your order.
-                </Typography>
-                <Typography variant="subtitle1">
-                  Your order number is #2001539. We have emailed your order confirmation, and will
-                  send you an update when your order has shipped.
-                </Typography>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                {getStepContent(activeStep)}
-                <div className={classes.buttons}>
-                  {activeStep !== 0 && (
-                    <Button onClick={handleBack} className={classes.button}>
-                      Back
-                    </Button>
-                  )}
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                  >
-                    {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
-                  </Button>
-                </div>
-              </React.Fragment>
-            )}
-          </React.Fragment>
+      <Typography variant="h6" gutterBottom>
+        Employee Information
+      </Typography>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={6}>
+          {/* <TextField
+            required
+            id="firstName"
+            name="firstName"
+            label="First name"
+            fullWidth
+            autoComplete="given-name"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="lastName"
+            name="lastName"
+            label="Last name"
+            fullWidth
+            autoComplete="family-name"
+          /> */}
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            id="employee_address"
+            name="address1"
+            label="Employee address"
+            fullWidth
+            autoComplete="shipping address-line1"
+          />
+        </Grid>
+      </Grid>
+    </React.Fragment>
         </Paper>
       </main>
     </React.Fragment>

@@ -28,6 +28,7 @@ import DecisionPage from './pages/Decision/Decision.js';
 import LogIn from './pages/Login/LogIn'
 import SignUp from './pages/Login/SignUp.js';
 import CreateESOP from './pages/Company/CreateESOP/CreateESOP.js';
+import CreateShare from './pages/Company/CreateShare/CreateStock.js';
 
 /* FIXME: Step 3.1 */
 
@@ -39,7 +40,7 @@ import CreateESOP from './pages/Company/CreateESOP/CreateESOP.js';
 
 window.esop_info = {
   address: null,
-  stock_addres: null,
+  stock_address: null,
   expiration_date: null,
   strike_price: null,
   cliff: null,
@@ -110,6 +111,7 @@ function App() {
         <Route path="/decision" element={<DecisionPage />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/createesop" element={<CreateESOP />} />
+        <Route path="/createshare" element={<CreateShare />} />
       </Routes>
     </Router>
   );

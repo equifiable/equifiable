@@ -41,45 +41,19 @@ export default function Review() {
       <Typography variant="h6" gutterBottom>
         Order summary
       </Typography>
-      <List disablePadding>
-        {products.map((product) => (
-          <ListItem className={classes.listItem} key={product.name}>
-            <ListItemText primary={product.name} secondary={product.desc} />
-            <Typography variant="body2">{product.price}</Typography>
-          </ListItem>
-        ))}
-        <ListItem className={classes.listItem}>
-          <ListItemText primary="Total" />
-          <Typography variant="subtitle1" className={classes.total}>
-            $34.06
-          </Typography>
-        </ListItem>
-      </List>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom className={classes.title}>
-            Shipping
-          </Typography>
-          <Typography gutterBottom>John Smith</Typography>
-          <Typography gutterBottom>{addresses.join(', ')}</Typography>
-        </Grid>
-        <Grid item container direction="column" xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom className={classes.title}>
-            Payment details
-          </Typography>
-          <Grid container>
-            {payments.map((payment) => (
-              <React.Fragment key={payment.name}>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.name}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.detail}</Typography>
-                </Grid>
-              </React.Fragment>
-            ))}
-          </Grid>
-        </Grid>
+      <Grid container justifyContent="center" spacing={3}>
+      <Grid item xs={12}>
+      <div><b>Employee address:</b> {window.esop_info.address}</div>
+      <div><b>Stock address:</b> {window.esop_info.stock_address}</div>
+      <div><b>Expiration date:</b> {window.esop_info.expiration_date}</div>
+      <div><b>Strike price:</b> {window.esop_info.strike_price}</div>
+      <div><b>Cliff:</b> {window.esop_info.cliff}</div>
+      <div><b>Number shares:</b> {window.esop_info.number_shares}</div>
+      <div><b>Fired expiration:</b> {window.esop_info.fired_expiration}</div>
+      <div><b>Date:</b> {window.esop_info.date}</div>
+      <div><b>Number of shares:</b> {window.esop_info.number_shares}</div>
+
+       </Grid>
       </Grid>
     </React.Fragment>
   );

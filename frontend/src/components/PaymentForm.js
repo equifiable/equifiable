@@ -11,7 +11,7 @@ export default function PaymentForm() {
     const change_stock_address = (event) => {
         console.log('WORKING!')
         const newaddress = event.target.value;
-        window.esop_info.address = newaddress;
+        window.esop_info.stock_address = newaddress;
         console.log(window.esop_info.address);
     };
 
@@ -49,6 +49,7 @@ export default function PaymentForm() {
         Stock option package
       </Typography>
       <Grid container spacing={3}>
+      <Grid item xs={12}>
       <TextField
             required
             id="stock_address"
@@ -58,6 +59,7 @@ export default function PaymentForm() {
             autoComplete="shipping address-level2"
             onChange={change_stock_address}
           />
+       </Grid>
       <Grid item xs={12}>
         <TextField
         required
