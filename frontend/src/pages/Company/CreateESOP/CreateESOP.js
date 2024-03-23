@@ -14,6 +14,7 @@ import Review from '../../../components/Review';
 import AddressForm from '../../../components/AddressForm';
 import PaymentForm from '../../../components/PaymentForm';
 import MenuBar from '../../../components/MenuBar';
+import Sidebar from '../../../components/SideBar';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -83,6 +84,7 @@ export default function CreateESOP() {
     <React.Fragment>
       <CssBaseline />
       <MenuBar/>
+      <Sidebar/>
       <main className={classes.layout}>
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h4" align="center">

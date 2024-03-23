@@ -25,7 +25,8 @@
     "react-scripts": "4.0.3",
     "web-vitals": "^1.0.1",
     "boostrap":"^2.0.0",
-    "react-bootstrap":"^2.10.2"
+    "react-bootstrap":"^2.10.2",
+    "react-pro-sidebar":"^1.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
