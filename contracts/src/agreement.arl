@@ -4,22 +4,58 @@ archetype agreement(
     company_address : address, 
     expiration_date : date, 
     strike_price : tez,
-    vesting : list<date * nat>
+    vesting : list<date * nat>,
+    post_termination_exercise_window : nat
 )
 
+record balances {granted : nat; future : nat; available : nat; exercised : nat}
+
 variable exercised_tokens : nat = 0
+variable termination_date : option<date> = none
+
+variable terminated : bool = false
+variable closed : bool = false
+
+function isStillValid(d : date) : bool {
+    var beforeExpirationDate : bool = d <= expiration_date;
+    var beforePTEP : bool = match termination_date with
+    | some(tDate) -> d <= tDate + post_termination_exercise_window*1d
+    | none        -> false
+    end;
+    var stillValid : bool = beforeExpirationDate and (not terminated or beforePTEP);
+    return stillValid
+}
+
+function calculateBalance() :  balances {
+    var vested_tokens : nat = 0;
+    var granted_tokens : nat = 0;
+
+    for pair in vesting do
+        vested_tokens += (isStillValid(pair[0])) ? pair[1] : 0;
+        granted_tokens += pair[1];
+    done;
+
+    var available_tokens : nat ?= int_to_nat(vested_tokens - exercised_tokens); 
+    var future_tokens : nat ?= int_to_nat(granted_tokens - vested_tokens); 
+
+    return {
+        granted = granted_tokens;
+        exercised = exercised_tokens;
+        available = available_tokens;
+        future = future_tokens
+    }
+}
 
 entry execute(amount : nat) {
     called by recipient
     require {
-        // TODO: has not resigned
-        r1 : now <= expiration_date otherwise "Expired";
+        r1 : isStillValid(now) otherwise "Expired";
         r2: transferred = amount*strike_price
     }
     effect {
         var b : balances = calculateBalance();
 
-        do_fail_if(amount > b.available, "NotEnoughAvailable");
+        do_fail_if(amount > b.available, "NotEnoughOptionsAvailable");
 
         transfer 0tz to share_address call %transfer<address * address * nat>((self_address, recipient, amount));
 
@@ -29,25 +65,30 @@ entry execute(amount : nat) {
     }
 }
 
-record balances {granted : nat; future : nat; available : nat; exercised : nat}
+entry terminate() {
+    called by company_address
+    require {
+        isTerminated : terminated = false otherwise "AlreadyTerminated"
+    }
+    effect {
+        terminated := true;
+        var b : balances = calculateBalance();
+        // unlock future company shares
+        transfer 0tz to share_address call %transfer<address * address * nat>((self_address, company_address, b.future));
+        // this will start the Post-Termination Exercise Period
+        termination_date := some(now)
+    }
+}
 
-function calculateBalance() :  balances {
-    var vested_tokens : nat = 0;
-    var granted_tokens : nat = 0;
-
-    for pair in vesting do
-        vested_tokens += (now >= pair[0]) ? pair[1] : 0;
-        granted_tokens += pair[1];
-    done;
-
-    var available_tokens : nat ?= int_to_nat(vested_tokens - exercised_tokens); 
-    var future_tokens : nat ?= int_to_nat(granted_tokens - vested_tokens); 
-    
-    return {
-        granted = granted_tokens;
-        exercised = exercised_tokens;
-        available = available_tokens;
-        future = future_tokens
+entry retrieveExpiredShares() {
+    require {
+        isExpired : not isStillValid(now) otherwise "NotExpired";
+        stillOpen : not closed otherwise "AlreadyClosed"
+    }
+    effect {
+        var b : balances = calculateBalance();
+        transfer 0tz to share_address call %transfer<address * address * nat>((self_address, company_address, b.available));
+        closed := true
     }
 }
 

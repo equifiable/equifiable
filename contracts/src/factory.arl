@@ -15,7 +15,8 @@ entry create(
     company_address : address, 
     expiration_date : date, 
     strike_price : tez,
-    vesting : list<date * nat>) {
+    vesting : list<date * nat>,
+    post_termination_exercise_window : nat) {
     called by company_address
     require {
         r1 : transferred = price otherwise "InsufficientTransfer"
@@ -28,7 +29,8 @@ entry create(
             company_address = company_address;
             expiration_date = expiration_date;
             strike_price = strike_price;
-            vesting = vesting
+            vesting = vesting;
+            post_termination_exercise_window = post_termination_exercise_window
         });
         operations := [agreement_op_address[0]];
 
