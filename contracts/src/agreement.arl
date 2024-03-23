@@ -1,0 +1,42 @@
+archetype agreement(
+    share_address : address, 
+    recipient : address, 
+    company_address : address, 
+    expiration_date : date, 
+    strike_price : tez,
+    vesting : list<date * nat>
+)
+
+variable exercised_tokens : nat = 0
+
+entry execute(amount : nat) {
+    called by recipient
+    require {
+        // TODO: has not resigned
+        r1 : now <= expiration_date otherwise "Expired";
+        r2: transferred = amount*strike_price
+    }
+    effect {
+        var vested_tokens : nat = calculateBalance();
+
+        do_fail_if(amount > (vested_tokens - exercised_tokens), "NotEnoughAvailable");
+
+        transfer 0tz to share_address call %transfer<address * address * nat>((self_address, recipient, amount));
+
+        // TODO: accept other currencies
+        transfer transferred to company_address;
+        exercised_tokens += amount;
+    }
+}
+
+function calculateBalance() : nat {
+    var vested_tokens : nat = 0;
+    for pair in vesting do
+        vested_tokens += (now >= pair[0]) ? pair[1] : 0;
+    done;
+    return vested_tokens
+}
+
+view getVested() : nat {
+    return calculateBalance()
+}
