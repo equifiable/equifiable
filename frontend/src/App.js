@@ -39,12 +39,13 @@ import CreateESOP from './pages/Company/CreateESOP/CreateESOP.js';
 
 window.esop_info = {
   address: null,
-  stock_adres: null,
-  expiration: null,
-  clif: null,
+  stock_addres: null,
+  expiration_date: null,
+  cliff: null,
   number_shares: null,
   fired_expiration: null,
-  date: null
+  date: null,
+  number_shares: null
 };
 
 function App() {

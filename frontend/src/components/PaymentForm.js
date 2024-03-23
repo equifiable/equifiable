@@ -24,15 +24,15 @@ export default function PaymentForm() {
 
     const change_cliff = (event) => {
         console.log('WORKING!')
-        const newaddress = event.target.value;
-        window.esop_info.address = newaddress;
+        const value = event.target.value;
+        window.esop_info.cliff = value;
         console.log(window.esop_info.address);
     };
 
     const change_number_shares = (event) => {
         console.log('WORKING!')
-        const newaddress = event.target.value;
-        window.esop_info.address = newaddress;
+        const value = event.target.value;
+        window.esop_info.number_shares = value;
         console.log(window.esop_info.address);
     };
 
