@@ -22,10 +22,9 @@ const next_year = new Date("2025-06-01")
 const next_month = new Date("2024-07-01")  
 const now = new Date("2024-06-01")
 
-set_mockup_now(now)
-
 set_mockup()
 set_quiet(true);
+set_mockup_now(now)
 
 /* Initialisation ---------------------------------------------------------- */
 
@@ -86,13 +85,19 @@ describe('[SUBSCRIPT] Call cancelSubscription', () => {
 
 describe('[SUBSCRIPT] Call subscribe type 2 - already added!', () => {
   it("Call 'subscribe type 2' - ERROR", async () => {
-    await subscription.subscribe(token_id2,{amount:value2, as:alice})
+    assert.rejects( 
+      async () => subscription.subscribe(token_id2,{amount:value2, as:alice}), 
+      { "value": "\"You already have an account!\""}
+    );
   })
 })
 
 describe('[SUBSCRIPT] Call subscribe type 2 - wrong price!', () => {
   it("Call 'subscribe type 2 - ERROR'", async () => {
-    await subscription.subscribe(token_id2,{amount:value3, as:bob})
+    assert.rejects( 
+      async () => subscription.subscribe(token_id2,{amount:value3, as:bob}), 
+      { "value": "\"Not good value for this package\""}
+    );
   })
 })
 
@@ -100,7 +105,10 @@ describe('[SUBSCRIPT] Call subscribe type 2 - wrong price!', () => {
 describe('[SUBSCRIPT] Call payBill type 1 - late payment!', () => {
   it("Call 'payBill type 1' - ERROR", async () => {
     delay_mockup_now_by_day(60);
-    await subscription.payBill({amount:value1, as: alice})
+    assert.rejects( 
+      async () => subscription.payBill({amount:value1, as: alice}), 
+      { "value": "\"Payment is late -  you lost your account\""}
+    );
     const aliceUser = await subscription.get_User();
     assert(aliceUser[0][0].equals(alice.get_address()));
     assert(aliceUser[0][1]['nextPayment'].getTime()===next_month.getTime());
