@@ -41,6 +41,7 @@ window.esop_info = {
   address: null,
   stock_addres: null,
   expiration_date: null,
+  strike_price: null,
   cliff: null,
   number_shares: null,
   fired_expiration: null,

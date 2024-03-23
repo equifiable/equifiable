@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 
-const DateField = () => {
+const DateField = ({onChangeField}) => {
   return (
     <TextField
       required
@@ -11,6 +11,7 @@ const DateField = () => {
       label="Expiration Date"
       fullWidth
       autoComplete="shipping address-line2"
+      onInput={onChangeField}
       InputLabelProps={{
         shrink: true,
       }}

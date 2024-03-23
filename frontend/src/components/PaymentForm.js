@@ -19,21 +19,28 @@ export default function PaymentForm() {
         console.log('WORKING!')
         const value = event.target.value;
         window.esop_info.expiration_date = value;
-        console.log(window.esop_info.address);
+        console.log(window.esop_info.expiration_date);
     };
 
     const change_cliff = (event) => {
         console.log('WORKING!')
         const value = event.target.value;
         window.esop_info.cliff = value;
-        console.log(window.esop_info.address);
+        console.log(window.esop_info.cliff);
     };
 
     const change_number_shares = (event) => {
         console.log('WORKING!')
         const value = event.target.value;
         window.esop_info.number_shares = value;
-        console.log(window.esop_info.address);
+        console.log(window.esop_info.number_shares);
+    };
+    
+    const change_strike_price = (event) => {
+        console.log('WORKING!')
+        const value = event.target.value;
+        window.esop_info.strike_price = value;
+        console.log(window.esop_info.strike_price);
     };
 
   return (
@@ -52,7 +59,24 @@ export default function PaymentForm() {
             onChange={change_stock_address}
           />
       <Grid item xs={12}>
-            <DateField onChange={change_expiration_date}/>
+        <TextField
+        required
+        id="expiration-date"
+        type="date"
+        name="expiration-date"
+        label="Expiration Date"
+        fullWidth
+        autoComplete="shipping address-line2"
+        onInput={change_expiration_date}
+        InputLabelProps={{
+            shrink: true,
+        }}
+        InputProps={{
+            inputProps: {
+            min: new Date().toISOString().split('T')[0], // Set min date to today
+            },
+        }}
+        />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -63,7 +87,7 @@ export default function PaymentForm() {
             label="Strike price"
             fullWidth
             autoComplete="shipping address-level2"
-            onChange={change_strike_price}
+            onInput={change_strike_price}
           />
         </Grid>
         {/* 
@@ -99,7 +123,7 @@ export default function PaymentForm() {
             label="cliff"
             fullWidth
             autoComplete="shipping address-line1"
-            onChange={change_cliff}
+            onInput={change_cliff}
           />
         </Grid>
         <Grid item xs={12}>
@@ -111,7 +135,7 @@ export default function PaymentForm() {
             label="number_shares"
             fullWidth
             autoComplete="shipping address-line1"
-            onChange={change_number_shares}
+            onInput={change_number_shares}
           />
         </Grid>    
       </Grid>
