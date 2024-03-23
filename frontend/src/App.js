@@ -24,7 +24,7 @@ import Button from '@mui/material/Button';
 import { useTezos, useAccountPkh } from './dappstate';
 import { useSnackContext } from './snackstate';
 import { UnitValue } from '@taquito/taquito';
-import DecisionPage from './pages/Login/Decision.js';
+import DecisionPage from './pages/Decision/Decision.js';
 import LogIn from './pages/Login/LogIn'
 import SignUp from './pages/Login/SignUp.js';
 

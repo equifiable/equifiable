@@ -1,6 +1,6 @@
 import React from 'react';
 import RedirectButton from '../../components/RedirectButon';
-import LogIn from './LogIn'
+import LogIn from '../Login/LogIn'
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import './Decision.css';
 
