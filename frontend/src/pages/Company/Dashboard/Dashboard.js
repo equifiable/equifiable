@@ -4,6 +4,7 @@ import { Chart, registerables } from 'chart.js';
 
 // Import custom CSS styles for Dashboard
 import './Dashboard.css';
+import MenuBar from '../../../components/MenuBar';
 
 // Register the chart.js components to use
 Chart.register(...registerables);
@@ -75,7 +76,9 @@ const Dashboard = () => {
 
   // Render the Dashboard component
   return (
-    <><h2>Dashboard Title</h2><p>This is an example text placed above the table.</p><div className="dashboardContainer">
+    <React.Fragment>
+    <MenuBar/>
+    <h2>Dashboard Title</h2><p>This is an example text placed above the table.</p><div className="dashboardContainer">
           <table className="dashboardTable">
               <thead>
                   <tr>
@@ -113,7 +116,8 @@ const Dashboard = () => {
                   ))}
               </tbody>
           </table>
-      </div><p>This is an example text placed below the table.</p></>
+      </div><p>This is an example text placed below the table.</p>
+      </React.Fragment>
   );
 };
 
