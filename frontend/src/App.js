@@ -117,7 +117,7 @@ function App() {
         <Route path="/signup_company" element={<SignUpCompany />} />
         <Route path="/login_company" element={<LogInCompany />} />
         <Route path="/employee/createesop" element={<CreateESOP />} />
-        <Route path="/employee/createstock" element={<CreateShare />} />
+        <Route path="/company/createstock" element={<CreateShare />} />
         <Route path="/company/dashboard" element={<CompanyDashboard />} />
         <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
         
