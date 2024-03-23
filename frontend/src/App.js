@@ -25,12 +25,14 @@ import { useTezos, useAccountPkh } from './dappstate';
 import { useSnackContext } from './snackstate';
 import { UnitValue } from '@taquito/taquito';
 import DecisionPage from './pages/Decision/Decision.js';
-import LogIn from './pages/Login/LogIn'
-import SignUp from './pages/Login/SignUp.js';
+import LogIn from './pages/LoginEmploye/LogIn.js'
+import SignUp from './pages/LoginEmploye/SignUp.js';
 import CreateESOP from './pages/Company/CreateESOP/CreateESOP.js';
 import CreateShare from './pages/Company/CreateShare/CreateStock.js';
 import CompanyDashboard from './pages/Company/CompanyDashboard/CompanyDashboard.js';
 import EmployeeDashboard from './pages/Employee/EmployeeDashboard/EmployeeDashboard.js';
+import LogInCompany from './pages/LoginCompany/LogInCompany.js';
+import SignUpCompany from './pages/LoginCompany/SignUpCompany.js';
 
 /* FIXME: Step 3.1 */
 
@@ -109,9 +111,11 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<DecisionPage />} />
-        <Route path="/signup" element={<SignUp />} />
         <Route path="/decision" element={<DecisionPage />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LogIn />} />
+        <Route path="/signup_company" element={<SignUpCompany />} />
+        <Route path="/login_company" element={<LogInCompany />} />
         <Route path="/employee/createesop" element={<CreateESOP />} />
         <Route path="/company/createstock" element={<CreateShare />} />
         <Route path="/company/dashboard" element={<CompanyDashboard />} />
