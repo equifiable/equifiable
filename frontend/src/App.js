@@ -26,7 +26,34 @@ import { UnitValue } from '@taquito/taquito';
 
 /* FIXME: Step 3.1 */
 
-/* FIXME: step 4.1 */
+const BidButton = () => {
+  const tezos = useTezos();
+  const account = useAccountPkh(); // public key
+  const { settings } = useSettingsContext();
+  const { setInfoSnack, setErrorSnack, hideSnack } = useSnackContext();
+  const bid = async () => {
+    try {
+      const contract  = await tezos.wallet.at(settings.contract);
+      var res = await contract.contractViews.getVested().executeView({
+        source: account,
+        viewCaller: account
+      });
+      console.log('Vested: ', res.toNumber())
+      // const operation = await contract.methods.bid(UnitValue).send({ amount: 10 });
+      // const shorthash = operation.opHash.substring(0, 10) + "...";
+      // setInfoSnack(`waiting for ${ shorthash } to be confirmed ...`);
+      // await operation.receipt();
+      // hideSnack();
+    } catch (error) {
+      setErrorSnack(error.message);
+    }
+  }
+  return (
+    <Button onClick={ bid } variant="outlined" disabled={ account === null }>
+      post bid
+    </Button>);
+}
+
 
 /* FIXME: Step 6.1 */
 
@@ -74,7 +101,12 @@ function App() {
 
             { /* FIXME: Step 6.2 */ }
 
-            { /* FIXME: Step 4.3 */ }
+            <Grid item xs={12}>
+            <BidButton />
+          </Grid>
+            <Grid item xs={12}>
+            <WalletButton />
+          </Grid>
           </Grid>
         </Container>
       </div>

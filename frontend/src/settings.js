@@ -5,8 +5,8 @@ export function useSettings() {
 
   const [settings,setState] = useState({
     network  : 'ghostnet',
-    endpoint : 'https://ghostnet.ecadinfra.com',
-    contract : '',
+    endpoint : 'https://rpc.ghostnet.teztnets.com',
+    contract : 'KT197jnm6ZTrjfuf5aB4uo5rZ1D3AXfYNgGq',
     show     : false,
   });
 
