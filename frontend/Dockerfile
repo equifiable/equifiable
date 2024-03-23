@@ -32,7 +32,9 @@ RUN apt-get clean && \
 COPY package*.json ./
 
 # Install app dependencies
-RUN npm install
+RUN npm install --force
+RUN npm install firebase --force
+RUN npm install -g firebase-tools --force
 
 WORKDIR /usr/src/app
 

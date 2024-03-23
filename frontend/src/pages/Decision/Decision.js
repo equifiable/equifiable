@@ -1,6 +1,6 @@
 import React from 'react';
 import RedirectButton from '../../components/RedirectButon';
-import LogIn from '../Login/LogIn'
+import LogIn from '../LoginEmploye/LogIn'
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import './Decision.css';
 
@@ -23,7 +23,7 @@ const DecisionPage = () => {
         </div>
         <div className="role-item">
         
-          <RedirectButton className="role-button" to="/login">Company</RedirectButton>
+          <RedirectButton className="role-button" to="/login_company">Company</RedirectButton>
           
         </div>
       </div>
