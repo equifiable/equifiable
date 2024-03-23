@@ -27,6 +27,7 @@ import { UnitValue } from '@taquito/taquito';
 import DecisionPage from './pages/Decision/Decision.js';
 import LogIn from './pages/Login/LogIn'
 import SignUp from './pages/Login/SignUp.js';
+import CreateESOP from './pages/Company/CreateESOP/CreateESOP.js'
 
 /* FIXME: Step 3.1 */
 
@@ -94,6 +95,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/decision" element={<DecisionPage />} />
         <Route path="/login" element={<LogIn />} />
+        <Route path="/createesop" element={<CreateESOP />} />
       </Routes>
     </Router>
   );

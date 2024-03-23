@@ -1,6 +1,6 @@
 
 import React from 'react';
-import './CreateESPO.css';
+import './CreateESOP.css';
 
 export default function CreateESOP() {
   return (
