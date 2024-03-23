@@ -17,9 +17,9 @@ entry execute(amount : nat) {
         r2: transferred = amount*strike_price
     }
     effect {
-        var vested_tokens : nat = calculateBalance();
+        var b : balances = calculateBalance();
 
-        do_fail_if(amount > (vested_tokens - exercised_tokens), "NotEnoughAvailable");
+        do_fail_if(amount > b.available, "NotEnoughAvailable");
 
         transfer 0tz to share_address call %transfer<address * address * nat>((self_address, recipient, amount));
 
@@ -29,14 +29,29 @@ entry execute(amount : nat) {
     }
 }
 
-function calculateBalance() : nat {
+record balances {granted : nat; future : nat; available : nat; exercised : nat}
+
+function calculateBalance() :  balances {
     var vested_tokens : nat = 0;
+    var granted_tokens : nat = 0;
+
     for pair in vesting do
         vested_tokens += (now >= pair[0]) ? pair[1] : 0;
+        granted_tokens += pair[1];
     done;
-    return vested_tokens
+
+    var available_tokens : nat ?= int_to_nat(vested_tokens - exercised_tokens); 
+    var future_tokens : nat ?= int_to_nat(granted_tokens - vested_tokens); 
+    
+    return {
+        granted = granted_tokens;
+        exercised = exercised_tokens;
+        available = available_tokens;
+        future = future_tokens
+    }
 }
 
-view getVested() : nat {
-    return calculateBalance()
+view getBalances() : balances {
+    var response : balances = calculateBalance();
+    return response
 }
