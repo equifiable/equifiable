@@ -4,18 +4,67 @@ import { Chart, registerables } from 'chart.js';
 import './EmployeeDashboard.css';
 import MenuBar from '../../../components/MenuBar';
 
+
 Chart.register(...registerables);
 
 const EmployeeDashboard = () => {
   const [selectedRowIndex, setSelectedRowIndex] = useState(null);
-  const [nameFilter, setNameFilter] = useState(''); // State for name filter input
-  const [descriptionFilter, setDescriptionFilter] = useState(''); // State for description filter input
+  const [CompanyFilter, setCompanyFilter] = useState(''); // State for name filter input
+  const [OptionGrantFilter, setOptionGrantFilter] = useState(''); // State for description filter input
 
-  const tableData = [
-    { id: 1, name: 'Item 1', description: 'Descrição do item 1' },
-    { id: 2, name: 'Item 2', description: 'Descrição do item 2' },
-    { id: 3, name: 'Item 3', description: 'Descrição do item 3' },
-  ];
+
+
+  tableData = [{'record_balances': {'granted': 1000,'future': 500,'available': 800,'exercised': 200},
+                  'agreement': {'agreement_id':'ishdhdjkhei','share_address': '0xShareAddr1','recipient': '0xRecipientAddr1','company_address': '0xCompanyAddr1','expiration_date': '2023-12-31T23:59:59','strike_price': 3.14,'vesting': [('2020-01-01T15:00:20', 100), ('2021-01-01T15:00:20', 200)],'post_termination_exercise_window': 90}
+              },
+{'record_balances': {'granted': 2000,
+  'future': 1000,
+  'available': 1600,
+  'exercised': 400},
+ 'agreement': {
+  'agreement_id':'iodudydio',
+  'share_address': '0xShareAddr2',
+  'recipient': '0xRecipientAddr2',
+  'company_address': '0xCompanyAddr2',
+  'expiration_date': '2023-12-31T23:59:59',
+  'strike_price': 6.28,
+  'vesting': [('2020-01-01T15:00:20', 200), ('2021-01-01T15:00:20', 400)],
+  'post_termination_exercise_window': 180}},
+{'record_balances': {'granted': 3000,
+  'future': 1500,
+  'available': 2400,
+  'exercised': 600},
+ 'agreement': {
+  'agreement_id':'uizgtspd',
+  'share_address': '0xShareAddr3',
+  'recipient': '0xRecipientAddr3',
+  'company_address': '0xCompanyAddr3',
+  'expiration_date': '2023-12-31T23:59:59',
+  'strike_price': 9.42,
+  'vesting': [('2020-01-01T15:00:20', 300), ('2021-01-01T15:00:20', 600)],
+  'post_termination_exercise_window': 270}}]
+
+
+  client_data = joazinho.request_data(client)
+  client_data.forEach(
+    function(agreement_data) {
+      tableData.push({
+        ContractID: agreement_data.agreement.agreement_id,
+        Company: agreement_data.agreement.company_address,
+        Share: agreement_data.agreement.share_address,
+        VestingStartDate: agreement_data.agreement.vesting[0],
+        VestingEndDate: agreement_data.agreement.vesting[-1],
+        ExpirationDate: agreement_data.agreement.expiration_date,
+        PricePerShare: agreement_data.agreement.strike_price,
+        Granted: record_balances.granted,
+        Vested: agreement_data.record_balances.available + agreement_data.record_balances.exercised,
+        Exercised: agreement_data.record_balances.exercised,
+
+      })
+  });
+
+
+  
 
   const handleRowClick = (index) => {
     setSelectedRowIndex(index === selectedRowIndex ? null : index);
@@ -23,8 +72,8 @@ const EmployeeDashboard = () => {
 
   // Filter tableData based on name and description filters
   const filteredData = tableData.filter((row) => {
-    return row.name.toLowerCase().includes(nameFilter.toLowerCase()) &&
-           row.description.toLowerCase().includes(descriptionFilter.toLowerCase());
+    return row.Company.toLowerCase().includes(CompanyFilter.toLowerCase()) &&
+           row.OptionGranted.toLowerCase().includes(OptionGrantFilter.toLowerCase());
   });
 
 
@@ -64,15 +113,15 @@ const EmployeeDashboard = () => {
         {/* Inputs for filtering */}
         <input 
           type="text" 
-          placeholder="Filter by name..." 
-          value={nameFilter} 
-          onChange={(e) => setNameFilter(e.target.value)} 
+          placeholder="Filter by Company..." 
+          value={CompanyFilter} 
+          onChange={(e) => setCompanyFilter(e.target.value)}
         />
         <input 
           type="text" 
-          placeholder="Filter by description..." 
-          value={descriptionFilter} 
-          onChange={(e) => setDescriptionFilter(e.target.value)} 
+          placeholder="Filter by Option Grant..." 
+          value={OptionGrantFilter} 
+          onChange={(e) => setOptionGrantFilter(e.target.value)} 
         />
       </div>
       <div className="dashboardContainer">
@@ -80,42 +129,69 @@ const EmployeeDashboard = () => {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Nome</th>
-              <th>Descrição</th>
+              <th>Company Adress</th>
+              <th>Share Adress</th>
+              <th>Vesting Start Date</th>
+              <th>Vesting End Date</th>
+              <th>Expiration Date</th>
+              <th>Price per Share</th>
+              
             </tr>
           </thead>
           <tbody>
             {filteredData.map((row, index) => (
               <React.Fragment key={row.id}>
                 <tr onClick={() => handleRowClick(index)} className="tableRow">
-                  <td>{row.id}</td>
-                  <td>{row.name}</td>
-                  <td>{row.description}</td>
+                  <td>{row.ContractID}</td>
+                  <td>{row.Company}</td>
+                  <td>{row.Share}</td>
+                  <td>{row.VestingStartDate}</td>
+                  <td>{row.VestingEndDate}</td>
+                  <td>{row.ExpirationDate}</td>
+                  <td>{row.PricePerShare}</td>
+                
                 </tr>
                 {selectedRowIndex === index && (
                     <tr>
-                        <td colSpan="3" className="detailRow">
+                        <td colSpan="7" className="detailRow">
                             <div className="rowContainer">
-                                <div className="additionalInfo">
-                                    <h3>Details</h3>
-                                    <p><strong>TOTAL GRANTED OPTION:</strong> VALUE</p>
-                                    <p><strong>VESTED:</strong> 234</p>
-                                    <p><strong>EXERCISED:</strong> 1763</p>
-                                    <p><strong>EXPIRATION DATE:</strong> 10/08/2024</p>
+                                    <p><strong>TOTAL GRANTED:</strong>row.Granted</p>
+                                    <p><strong>VESTED:</strong> row.Vested</p>
+                                    <p><strong>EXERCISED:</strong> row.Exercised</p>
+                                    
                                     {/* Duplicate expiration date line removed for clarity */}
                                     <div className="actionContainer">
-                                        <input
-                                            className="numericInput"
-                                            type="number"
-                                            value={inputValue}
-                                            onChange={handleInputChange}
-                                            min="0" // Ensures the HTML input element itself restricts to non-negative values
-                                        />
-                                        <button className="executeButton" onClick={handleExecuteClick}>EXECUTE</button>
+                                      <table>
+                                        <tr>
+                                        
+                                         
+                                          <p className="promptText">
+                                            <strong>Shares to execute</strong>
+                                            
+                                          </p>
+ 
+                                        
+                                        </tr>
+                                        <tr>
+                                          <td>
+                                            <input
+                                              className="numericInput"
+                                              type="number"
+                                              value={inputValue}
+                                              onChange={handleInputChange}
+                                              placeholder="Shares to execute?"
+                                              min="0" // Ensures the HTML input element itself restricts to non-negative values
+                                            />
+                                          </td>
+                                          <td>
+                                            <button className="executeButton" onClick={handleExecuteClick}>EXECUTE</button>
+                                          </td>
+                                        </tr>
+                                      </table>
                                     </div>
 
                                     </div>
-                            </div>
+                            
                         </td>
                     </tr>
                 )}

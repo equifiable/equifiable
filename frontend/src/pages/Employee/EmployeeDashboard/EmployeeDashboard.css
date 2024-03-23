@@ -200,4 +200,42 @@
     box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.5); /* Focus glow for accessibility */
 }
 
+/* Style for the table cell that prompts the user */
+.promptCell {
+  padding: 20px; /* Ample space around the content for a clean look */
+  text-align: center; /* Center the text horizontally */
+  background-color: #f2f2f7; /* Light grey background for subtle contrast */
+  border-bottom: 1px solid #d1d1d1; /* Fine border line for separation */
+}
+
+/* Style for the prompt text */
+.promptText {
+  margin: 0; /* Remove default margin to precisely control spacing */
+  color: #1d1d1f; /* Dark grey color for text, ensuring good readability */
+  font-size: 18px; /* Slightly larger font size for clarity */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* System fonts for a native look */
+  font-weight: normal; /* Standard font weight for simplicity and readability */
+}
+
+/* Enhanced style for the table cell */
+.promptCell {
+  display: flex; /* Enables flexbox layout */
+  align-items: center; /* Vertically centers the flex items */
+  justify-content: center; /* Horizontally centers the flex items */
+  padding: 20px; /* Ample space around the content for a clean look */
+  background-color: #f2f2f7; /* Light grey background for subtle contrast */
+  border-bottom: 1px solid #d1d1d1; /* Fine border line for separation */
+  height: 100px; /* Set a specific height to ensure there's space to center within */
+}
+
+/* Refined style for the prompt text */
+.promptText {
+  margin: 0; /* Remove default margin to precisely control spacing */
+  color: #1d1d1f; /* Dark grey color for text, ensuring good readability */
+  font-size: 18px; /* Slightly larger font size for clarity */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* System fonts for a native look */
+  font-weight: bold; /* Makes the text bold */
+}
+
+
   
