@@ -12,8 +12,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Hyperlink from '../../components/HyperLink';
-
 
 function Copyright(props) {
   return (
@@ -32,7 +30,7 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function LogIn() {
+export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -91,7 +89,7 @@ export default function LogIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Create Account
             </Button>
             <Grid container>
               <Grid item xs>
@@ -100,9 +98,9 @@ export default function LogIn() {
                 </Link>
               </Grid>
               <Grid item>
-              <Link href="/signup" variant="body2">
+                <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
-              </Link>
+                </Link>
               </Grid>
             </Grid>
           </Box>

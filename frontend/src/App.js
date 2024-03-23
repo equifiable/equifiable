@@ -26,6 +26,7 @@ import { useSnackContext } from './snackstate';
 import { UnitValue } from '@taquito/taquito';
 import DecisionPage from './pages/Login/Decision.js';
 import LogIn from './pages/Login/LogIn'
+import SignUp from './pages/Login/SignUp.js';
 
 /* FIXME: Step 3.1 */
 
@@ -89,7 +90,8 @@ function App() {
     // </DAppProvider>
     <Router>
       <Routes>
-        <Route path="/" element={<App />} />
+        <Route path="/" element={<DecisionPage />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/decision" element={<DecisionPage />} />
         <Route path="/login" element={<LogIn />} />
       </Routes>
