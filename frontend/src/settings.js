@@ -6,7 +6,7 @@ export function useSettings() {
   const [settings,setState] = useState({
     network  : 'ghostnet',
     endpoint : 'https://rpc.ghostnet.teztnets.com',
-    contract : 'KT197jnm6ZTrjfuf5aB4uo5rZ1D3AXfYNgGq',
+    contract : 'KT1QkgJnq8ifhn97f85u6Sc4XDubLFHCau5m', // Factory contract   
     show     : false,
   });
 
