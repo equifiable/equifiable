@@ -27,13 +27,25 @@ import { UnitValue } from '@taquito/taquito';
 import DecisionPage from './pages/Decision/Decision.js';
 import LogIn from './pages/Login/LogIn'
 import SignUp from './pages/Login/SignUp.js';
-import CreateESOP from './pages/Company/CreateESOP/CreateESOP.js'
+import CreateESOP from './pages/Company/CreateESOP/CreateESOP.js';
 
 /* FIXME: Step 3.1 */
 
 /* FIXME: step 4.1 */
 
 /* FIXME: Step 6.1 */
+
+//Global variables
+
+window.esop_info = {
+  address: null,
+  stock_adres: null,
+  expiration: null,
+  clif: null,
+  number_shares: null,
+  fired_expiration: null,
+  date: null
+};
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
