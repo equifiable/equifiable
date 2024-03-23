@@ -1,0 +1,18 @@
+.role-button {
+    background-color: #007bff; /* Blue background color */
+    border: none; /* Remove border */
+    color: white; /* White text color */
+    padding: 15px 32px; /* Padding */
+    text-align: center; /* Center text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Display as inline block */
+    font-size: 16px; /* Font size */
+    margin: 4px 2px; /* Margin */
+    cursor: pointer; /* Cursor style */
+    border-radius: 10px; /* Rounded corners */
+    transition-duration: 0.4s; /* Smooth transition */
+  }
+  
+  .role-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }

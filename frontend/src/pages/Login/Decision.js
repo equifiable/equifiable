@@ -1,4 +1,6 @@
 import React from 'react';
+import RedirectButton from '../../components/RedirectButon';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import './Decision.css';
 
 /**
@@ -13,12 +15,14 @@ const LoginPage = () => {
       <h1 className="header">Log in to access your account</h1>
       <div className="role-selector">
         <div className="role-item">
-          Employee
-          <span className="arrow">→</span>
+          <Router>
+          <RedirectButton className="role-button" to="/another-page">Employee</RedirectButton>
+          </Router>
         </div>
         <div className="role-item">
-          Company
-          <span className="arrow">→</span>
+        <Router>
+          <RedirectButton className="role-button" to="/another-page">Company</RedirectButton>
+          </Router>
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import App from './App';
 import LogIn from './pages/Login/LogIn';
 import Decision from './pages/Login/Decision'
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
