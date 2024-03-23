@@ -45,12 +45,13 @@ export default function Review() {
       <Grid item xs={12}>
       <div><b>Employee address:</b> {window.esop_info.address}</div>
       <div><b>Stock address:</b> {window.esop_info.stock_address}</div>
+      <div><b>Emission date:</b> {window.esop_info.emission_date}</div>
       <div><b>Expiration date:</b> {window.esop_info.expiration_date}</div>
       <div><b>Strike price:</b> {window.esop_info.strike_price}</div>
       <div><b>Cliff:</b> {window.esop_info.cliff}</div>
+      <div><b>Vesting:</b> {window.esop_info.vesting}</div>
       <div><b>Number shares:</b> {window.esop_info.number_shares}</div>
       <div><b>Fired expiration:</b> {window.esop_info.fired_expiration}</div>
-      <div><b>Date:</b> {window.esop_info.date}</div>
       <div><b>Number of shares:</b> {window.esop_info.number_shares}</div>
 
        </Grid>

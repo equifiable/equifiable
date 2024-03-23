@@ -22,11 +22,21 @@ export default function PaymentForm() {
         console.log(window.esop_info.expiration_date);
     };
 
+    const change_emission_date = (event) => {
+      const value = event.target.value;
+      window.esop_info.emission_date = value;
+    };
+
     const change_cliff = (event) => {
         console.log('WORKING!')
         const value = event.target.value;
         window.esop_info.cliff = value;
         console.log(window.esop_info.cliff);
+    };
+
+    const change_vesting = (event) => {
+      const value = event.target.value;
+      window.esop_info.vesting = value;
     };
 
     const change_number_shares = (event) => {
@@ -60,7 +70,27 @@ export default function PaymentForm() {
             onChange={change_stock_address}
           />
        </Grid>
-      <Grid item xs={12}>
+       <Grid item xs={12}>
+        <TextField
+        required
+        id="emission-date"
+        type="date"
+        name="emission-date"
+        label="Emission Date"
+        fullWidth
+        autoComplete="emission date"
+        onInput={change_emission_date}
+        InputLabelProps={{
+            shrink: true,
+        }}
+        InputProps={{
+            inputProps: {
+            min: new Date().toISOString().split('T')[0], // Set min date to today
+            },
+        }}
+        />
+        </Grid>
+        <Grid item xs={12}>
         <TextField
         required
         id="expiration-date"
@@ -126,6 +156,18 @@ export default function PaymentForm() {
             fullWidth
             autoComplete="shipping address-line1"
             onInput={change_cliff}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            type="number"
+            id="vesting"
+            name="vesting"
+            label="vesting"
+            fullWidth
+            autoComplete="shipping address-line1"
+            onInput={change_vesting}
           />
         </Grid>
         <Grid item xs={12}>

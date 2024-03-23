@@ -14,7 +14,7 @@ import Review from '../../../components/Review';
 import AddressForm from '../../../components/AddressForm';
 import PaymentForm from '../../../components/PaymentForm';
 import MenuBar from '../../../components/MenuBar';
-import Sidebar from '../../../components/SideBar';
+import { useTezos, useAccountPkh } from '../../../dappstate';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const steps = ['Employee', 'Package', 'Review'];
+const steps = ['Employee', 'Data', 'Review'];
 
 function getStepContent(step) {
   switch (step) {
@@ -68,12 +68,85 @@ function getStepContent(step) {
   }
 }
 
+function distributeNumbersAcrossDates(dates, totalNumber) {
+  const numberOfDates = dates.length;
+  const baseNumber = Math.floor(totalNumber / numberOfDates);
+  const remainder = totalNumber % numberOfDates;
+  const distribution = [];
+
+  for (let i = 0; i < numberOfDates; i++) {
+    let numberForDate = baseNumber;
+    // Add the remainder to the last date
+    if (i === numberOfDates - 1) {
+      numberForDate += remainder;
+    }
+    distribution.push([dates[i], numberForDate]);
+  }
+
+  return distribution;
+}
+
 export default function CreateESOP() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
 
+  const tezos = useTezos();
+  const account = useAccountPkh(); 
+
+  const getFirstDaysOfYearBetweenDurations = (selectedDateStr, cliffDurationYears, vestingDurationYears) => {
+    const selectedDate = new Date(selectedDateStr);
+    const startDate = new Date(selectedDate);
+    startDate.setFullYear(selectedDate.getFullYear() + Number(cliffDurationYears));
+  
+    const endDate = new Date(selectedDate);
+    endDate.setFullYear(selectedDate.getFullYear() + Number(vestingDurationYears));
+  
+    const firstDays = [];
+  
+    let currentDate = new Date(startDate.getFullYear(), 0, 1); // January 1st of start year
+    while (currentDate <= endDate) {
+      firstDays.push(new Date(currentDate));
+      currentDate.setFullYear(currentDate.getFullYear() + 1);
+    }
+  
+    return firstDays;
+  }
+
+  const firstDays = getFirstDaysOfYearBetweenDurations(
+    window.esop_info.emission_date, 
+    window.esop_info.cliff, 
+    window.esop_info.vesting
+  );
+  const vesting = distributeNumbersAcrossDates(firstDays, window.esop_info.number_shares);
+  console.log(firstDays);
+  console.log(vesting);
+
   const handleNext = () => {
     setActiveStep(activeStep + 1);
+    // Final step
+    if (activeStep == steps.length-1) {
+      const data = {
+        share_address : window.esop_info.stock_address, 
+        recipient : window.esop_info.address,
+        company_address : account,
+        expiration_date : window.esop_info.expiration_date, 
+        strike_price : window.esop_info.strike_price, // tez
+        vesting : vesting,
+        post_termination_exercise_window : 90
+      }
+      console.log(data);
+      
+      // tezos.wallet
+      // .at('KT1KAUbe1gsdw5BeVQfgjh9xZFrHrKVs8ApD')
+      // .then((c) => {
+      //   let methods = c.methodsObject.create(data).send({
+      //     amount: 1,
+      //     storageLimit: 1,
+      //     mutez: false
+      //   });
+      // })
+      // .catch((error) => console.log(`Error: ${error}`));
+    }
   };
 
   const handleBack = () => {
@@ -123,7 +196,7 @@ export default function CreateESOP() {
                     onClick={handleNext}
                     className={classes.button}
                   >
-                    {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                    {activeStep === steps.length - 1 ? 'Generate ESOP' : 'Next'}
                   </Button>
                 </div>
               </React.Fragment>
