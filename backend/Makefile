@@ -1,6 +1,5 @@
 run_backend:
-	docker_compose up
+	docker-compose up --force-recreate --build
 
 update_firebase:
-	source .env
-	python updater/update_firebase.py
+	bash update_firebase.sh
