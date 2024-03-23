@@ -28,6 +28,7 @@ import DecisionPage from './pages/Decision/Decision.js';
 import LogIn from './pages/Login/LogIn'
 import SignUp from './pages/Login/SignUp.js';
 import CreateESOP from './pages/Company/CreateESOP/CreateESOP.js';
+import Dashboard from './pages/Company/Dashboard/Dashboard.js';
 
 /* FIXME: Step 3.1 */
 
@@ -110,6 +111,7 @@ function App() {
         <Route path="/decision" element={<DecisionPage />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/createesop" element={<CreateESOP />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );
