@@ -17,7 +17,7 @@ To access our application, please visit equifiable.com. Here, you'll find our ho
 
 To get started, look to the top right where you'll find two options: for companies and for employees, representing our two major client groups for whom we've developed this platform.
 
-### Company Login:
+### Company Tutorial:
 
 Upon selecting the option for companies, you'll be directed to a page where you'll see the following screen:
 
@@ -62,7 +62,7 @@ Check here our price policy:
 ![image](https://github.com/equifiable/equifiable/assets/160471697/2e229135-f34c-4b3d-8382-8c23206ca5f3)
 
 
-### Employee Login:
+### Employee Tutorial:
 
 To proceed as an employee, visit the website [equifiable.com](https://equifiable.com) and select the employee option from the top right corner. Here, you can connect to your wallet using the application template. If you don't have a wallet yet, simply follow the provided steps to create one. Afterward, you'll be redirected to this dashboard screen:
 
