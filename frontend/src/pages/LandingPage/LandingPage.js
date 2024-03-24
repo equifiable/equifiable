@@ -58,7 +58,7 @@ export default function LPage() {
     <div className="container">
       <img className="top-image" src={require('../../assets/logo_no_text.png').default} alt="Logo" />
       <img className="top-image" src={require('../../assets/name.png').default} alt="Logo" />
-      <h1 className="header">Equity with Trust</h1>
+      <h1 className="header">Building trust to reward those who build​</h1>
       <div className="role-selector">
       </div>
     </div>
