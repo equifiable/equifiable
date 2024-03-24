@@ -10,6 +10,8 @@ archetype agreement(
 
 record balances {granted : nat; future : nat; available : nat; exercised : nat}
 
+asset executions identified by executed_at {executed_at : date; executed_amount : nat}
+
 variable exercised_tokens : nat = 0
 variable termination_date : option<date> = none
 
@@ -67,6 +69,10 @@ entry execute(amount : nat) {
         // TODO: accept other currencies
         transfer transferred to company_address;
         exercised_tokens += amount;
+        executions.add({
+            executed_at = now;
+            executed_amount = amount
+        })
     }
 }
 
