@@ -1,13 +1,12 @@
 # EquiFiable
 
+[https://equifiable.com/](https://equifiable.com/).
+
 <p align="center">
   <img src="https://github.com/equifiable/equifiable/blob/main/frontend/src/assets/logo_no_text.png"  width="300px"/>
 </p>
 
-# Our Team
-
-![image](https://github.com/equifiable/equifiable/assets/160471697/29b8ab4c-8ecc-4bfb-b55a-41dc00525803)
-
+A Tezos blockchain-based platform for easy management of tokenized Employee Stock Option Plans, improving employee retention and simplifying equity distribution.​
 
 ## Equifiable Platform Guide
 
@@ -182,6 +181,11 @@ octez-client transfer 1.5 from myself to KT1NYURSBeB1k2ii3ErzM8E1jgQrAQEi1Khi --
 octez-client transfer 0 from myself to KT1NYURSBeB1k2ii3ErzM8E1jgQrAQEi1Khi --entrypoint "cancelSubscription" --arg "Unit"
 
 ```
+### Our Team
+
+![image](https://github.com/equifiable/equifiable/assets/160471697/29b8ab4c-8ecc-4bfb-b55a-41dc00525803)
+
+
 ### Contact
 
 If you have any questions about the platform, our product, or anything else, please don't hesitate to contact us at equifiable@gmail.com.
