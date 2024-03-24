@@ -33,6 +33,8 @@ import CompanyDashboard from './pages/Company/CompanyDashboard/CompanyDashboard.
 import EmployeeDashboard from './pages/Employee/EmployeeDashboard/EmployeeDashboard.js';
 import LogInCompany from './pages/LoginCompany/LogInCompany.js';
 import SignUpCompany from './pages/LoginCompany/SignUpCompany.js';
+import { useReady, useWallet, useConnect } from './dappstate';
+import { useEffect } from 'react';
 
 /* FIXME: Step 3.1 */
 

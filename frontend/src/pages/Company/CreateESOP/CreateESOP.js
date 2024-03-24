@@ -122,6 +122,7 @@ export default function CreateESOP() {
   console.log(vesting);
 
   const handleNext = () => {
+    
     setActiveStep(activeStep + 1);
     // Final step
     if (activeStep == steps.length-1) {
@@ -136,16 +137,21 @@ export default function CreateESOP() {
       }
       console.log(data);
       
-      // tezos.wallet
-      // .at('KT1KAUbe1gsdw5BeVQfgjh9xZFrHrKVs8ApD')
-      // .then((c) => {
-      //   let methods = c.methodsObject.create(data).send({
-      //     amount: 1,
-      //     storageLimit: 1,
-      //     mutez: false
-      //   });
-      // })
-      // .catch((error) => console.log(`Error: ${error}`));
+      tezos.wallet
+      .at('KT1ScikyYNRqLneQrPVgT7zF4FFfeen7pRhE')
+      .then((c) => {
+        return c.methodsObject.create(data).send({
+          amount: 1,
+          storageLimit: 1,
+          mutez: false
+        });
+      })
+      .then((op) => {
+        console.log(`Waiting for ${op.opHash} to be confirmed...`);
+        return op.confirmation(3).then(() => op.opHash);
+      })
+      .then((hash) => console.log(`Operation injected: ${hash}`))
+      .catch((error) => console.log(`Error: ${error}`));
     }
   };
 

@@ -89,7 +89,6 @@ export default function CreateESOP() {
   
   const tezos = useTezos();
   const account = useAccountPkh(); 
-  const textEncoder = new TextEncoder();
 
   const [open, setOpen] = React.useState(false);
   const [tokenized_share_address, set_tokenized_share_address] = React.useState("");
