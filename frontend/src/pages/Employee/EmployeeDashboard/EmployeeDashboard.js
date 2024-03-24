@@ -4,6 +4,9 @@ import './EmployeeDashboard.css';
 import MenuBar from '../../../components/MenuBar';
 import React, { useState, useEffect, useRef } from 'react';
 
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { useTezos, useAccountPkh } from '../../../dappstate';
+
 
 
 Chart.register(...registerables);
@@ -14,6 +17,16 @@ const EmployeeDashboard = () => {
   const [ShareFilter, setShareFilter] = useState(''); // State for description filter input
 
 
+  const tezos = useTezos();
+  const account = useAccountPkh(); 
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!account) {
+      navigate("/login");
+    }
+  }, [account]);
+  
 
   let client_data = [{'record_balances': {'granted': 1000,'future': 500,'available': 800,'exercised': 200},
                   'agreement': {'agreement_id':'ishdhdjkhei','share_address': '0xShareAddr1','recipient': '0xRecipientAddr1','company_address': '0xCompanyAddr1',
@@ -99,11 +112,29 @@ const EmployeeDashboard = () => {
    * Handles the 'EXECUTE' button click event.
    * Implement the desired functionality for when the button is clicked.
    */
-  const handleExecuteClick = () => {
-    console.log('Execute with value:', inputValue);
-    // Place the logic you want to execute with the inputValue here
-  };
+  const getHandleExecuteClick = (index) => {
+    return () => {
+      let amountStocks = inputValue;
+      let strikePrice = filteredData[index].PricePerShare;
+      let agreement_address = filteredData[index].ContractID;
+      
+      tezos.wallet
+      .at(agreement_address)
+      .then((c) => {
+        return c.methodsObject
+          .execute(amountStocks)
+          .send({amount: amountStocks*strikePrice});
+      })
+      .then((op) => {
+        console.log(`Waiting for ${op.opHash} to be confirmed...`);
+        return op.confirmation(3).then(() => op.opHash);
+      })
+      .then((hash) => console.log(`Operation injected: ${hash}`))
+      .catch((error) => console.log(`Error: ${error}`));
 
+    };   
+  }
+  
 
 
 // Custom hook to generate timestamps
@@ -616,7 +647,7 @@ const Graphs = () => {
                                         />
                                       </td>
                                       <td>
-                                        <button className="executeButton" onClick={handleExecuteClick}>EXECUTE</button>
+                                        <button className="executeButton" onClick={getHandleExecuteClick(index)}>EXECUTE</button>
                                       </td>
                                     </tr>
                                   </table>

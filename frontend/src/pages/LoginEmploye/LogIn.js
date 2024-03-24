@@ -39,7 +39,7 @@ export default function LogIn() {
  
   useEffect(() => {
     if (account) {
-      navigate("/employee/pricing");
+      navigate("/employee/dashboard");
     }
   }, [account]);
   
