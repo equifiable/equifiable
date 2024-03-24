@@ -182,3 +182,6 @@ octez-client transfer 1.5 from myself to KT1NYURSBeB1k2ii3ErzM8E1jgQrAQEi1Khi --
 octez-client transfer 0 from myself to KT1NYURSBeB1k2ii3ErzM8E1jgQrAQEi1Khi --entrypoint "cancelSubscription" --arg "Unit"
 
 ```
+### Contact
+
+If you have any questions about the platform, our product, or anything else, please don't hesitate to contact us at equifiable@gmail.com.
