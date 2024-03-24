@@ -1,13 +1,12 @@
 # EquiFiable
 
+[https://equifiable.com/](https://equifiable.com/)
+
 <p align="center">
   <img src="https://github.com/equifiable/equifiable/blob/main/frontend/src/assets/logo_no_text.png"  width="300px"/>
 </p>
 
-# Our Team
-
-![image](https://github.com/equifiable/equifiable/assets/160471697/29b8ab4c-8ecc-4bfb-b55a-41dc00525803)
-
+A Tezos blockchain-based platform for easy management of tokenized Employee Stock Option Plans, improving employee retention and simplifying equity distribution.​
 
 ## Equifiable Platform Guide
 
@@ -18,7 +17,7 @@ To access our application, please visit equifiable.com. Here, you'll find our ho
 
 To get started, look to the top right where you'll find two options: for companies and for employees, representing our two major client groups for whom we've developed this platform.
 
-### Company Login:
+### Company Tutorial:
 
 Upon selecting the option for companies, you'll be directed to a page where you'll see the following screen:
 
@@ -63,11 +62,7 @@ Check here our price policy:
 ![image](https://github.com/equifiable/equifiable/assets/160471697/2e229135-f34c-4b3d-8382-8c23206ca5f3)
 
 
-
-
-### Employee Login:
-
-## Employee Login:
+### Employee Tutorial:
 
 To proceed as an employee, visit the website [equifiable.com](https://equifiable.com) and select the employee option from the top right corner. Here, you can connect to your wallet using the application template. If you don't have a wallet yet, simply follow the provided steps to create one. Afterward, you'll be redirected to this dashboard screen:
 
@@ -81,7 +76,7 @@ To execute a share, simply select the desired share at the bottom of the page. Y
 
 In this scenario, you have the option to exercise more options, up to the available limit. You'll need to wait briefly to execute them, once executed your dashbord will update.
 
-### Technical Architecture
+#Technical Architecture
 
 We have three main components:
 
@@ -90,7 +85,7 @@ We have three main components:
 3. Backend: Application developed in Python with FastAPI and a Firebase database. Keeps an indexed version of all contracts created for easy access. Its content is for performance purposes and is verifiable through the blockchain.
 
 
-### Smart Contracts
+## Smart Contracts
 
 Now that you're familiar with using the platform and the technical specifications, you can understand how contracts work. Here's a simple explanation to guide you:
 
@@ -103,8 +98,6 @@ There are three main entities represented as contracts:
 2. Agreement: Smart contract that represents each SOP Agreement. Assigned to one company and recipient. A new one is deployed every time an agreement is signed.
 3. Share: Any fungible token following a minimal TZIP-7/FA1.2 standard. Deployed by the company outside the platform.
 4. Subscription: A smart contract enables a company to subscribe to our platform.
-
-## Contracts
 
 ### Setup the environment
 
@@ -182,6 +175,11 @@ octez-client transfer 1.5 from myself to KT1NYURSBeB1k2ii3ErzM8E1jgQrAQEi1Khi --
 octez-client transfer 0 from myself to KT1NYURSBeB1k2ii3ErzM8E1jgQrAQEi1Khi --entrypoint "cancelSubscription" --arg "Unit"
 
 ```
-### Contact
+# Our Team
+
+![image](https://github.com/equifiable/equifiable/assets/160471697/29b8ab4c-8ecc-4bfb-b55a-41dc00525803)
+
+
+# Contact
 
 If you have any questions about the platform, our product, or anything else, please don't hesitate to contact us at equifiable@gmail.com.
