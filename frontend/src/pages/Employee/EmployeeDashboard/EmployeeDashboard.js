@@ -4,118 +4,6 @@ import './EmployeeDashboard.css';
 import MenuBar from '../../../components/MenuBar';
 import React, { useState, useEffect, useRef } from 'react';
 
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
-import { useTezos, useAccountPkh } from '../../../dappstate';
-
-const http = require('http');
-const options = {
-  hostname: '172.16.120.78',
-  port: 8000,
-  path: '/recipients',
-  method: 'GET',
-};
-
-// const req = async () => http.get(options, res => {
-//   let http_data = '';
-
-//   console.log(`statusCode: ${res.statusCode}`);
-
-//   res.on('data', (chunk) => {
-//     http_data += chunk;
-//   });
-
-//   res.on('end', () => {
-//     http_data = JSON.parse(http_data);
-//     let outputData;
-//     outputData = calculateOutputData(http_data);
-//     console.log(outputData)
-//     return outputData;
-//   });
-// }).on('error', error => {
-//   console.error(error);
-// });
-const req = () => new Promise((resolve, reject) => {
-  http.get(options, res => {
-    let http_data = '';
-
-    console.log(`statusCode: ${res.statusCode}`);
-
-    res.on('data', (chunk) => {
-      http_data += chunk;
-    });
-
-    res.on('end', () => {
-      try {
-        http_data = JSON.parse(http_data);
-        const outputData = calculateOutputData(http_data);
-        console.log(outputData);
-        resolve(outputData);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }).on('error', error => {
-    console.error(error);
-    reject(error);
-  });
-});
-
-
-function calculateOutputData(http_data) {
-  const outputData = http_data.map(({ recipient_id, agreements }) => {
-    console.log('agreements ', agreements)
-    if (!agreements){
-      return {};
-    }
-    return Object.entries(agreements).map(([agreementId, agreement]) => {
-      const {
-        available,
-        closed,
-        company_address,
-        exercised,
-        exercised_tokens,
-        expiration_date,
-        future,
-        granted,
-        post_termination_exercise_window,
-        recipient,
-        share_address,
-        strike_price,
-        terminated,
-        termination_date,
-        vesting,
-      } = agreement;
-  
-      const record_balances = {
-        granted,
-        future,
-        available,
-        exercised: parseFloat(exercised_tokens) || 0,
-      };
-  
-      const vestingSchedule = vesting.map(({ nat, timestamp }) => [timestamp, parseFloat(nat)]);
-  
-      return {
-        record_balances,
-        agreement: {
-          agreement_id: agreementId,
-          share_address,
-          recipient,
-          company_address,
-          expiration_date,
-          strike_price,
-          vesting: vestingSchedule,
-          post_termination_exercise_window,
-        },
-      };
-    });
-  });
-  return outputData;
-}
-
-
-// await outputData;
-// console.log(outputData)
 
 
 Chart.register(...registerables);
@@ -126,50 +14,8 @@ const EmployeeDashboard = () => {
   const [ShareFilter, setShareFilter] = useState(''); // State for description filter input
 
 
-  const tezos = useTezos();
-  const account = useAccountPkh(); 
 
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!account) {
-      navigate("/login");
-    }
-  }, [account]);
-  
-  let client_data = [];
-  useEffect(async () => {
-    client_data = await req();
-    client_data=client_data[0];
-    if (client_data){
-      tableData = []
-      console.log('final', client_data);
-      client_data.forEach(
-        function(agreement_data) {
-          tableData.push({
-            ContractID: agreement_data.agreement.agreement_id,
-            Company: agreement_data.agreement.company_address,
-            Share: agreement_data.agreement.share_address,
-            VestingStartDate: agreement_data.agreement.vesting[0],
-            VestingEndDate: agreement_data.agreement.vesting[agreement_data.agreement.vesting.length - 1],
-            ExpirationDate: agreement_data.agreement.expiration_date,
-            PricePerShare: agreement_data.agreement.strike_price,
-            Granted: agreement_data.record_balances.granted,
-            Vested: agreement_data.record_balances.available + agreement_data.record_balances.exercised,
-            Exercised: agreement_data.record_balances.exercised,
-          })
-      });
-
-      let newfilteredData = tableData.filter((row) => {
-        return row.Company.toLowerCase().includes(CompanyFilter.toLowerCase()) &&
-               row.Share.toLowerCase().includes(ShareFilter.toLowerCase());
-      });
-      console.log('filtered', newfilteredData)
-      setFilteredData(newfilteredData)
-    }
-  });
-  
-
-  client_data = [{'record_balances': {'granted': 1000,'future': 500,'available': 800,'exercised': 200},
+  let client_data = [{'record_balances': {'granted': 1000,'future': 500,'available': 800,'exercised': 200},
                   'agreement': {'agreement_id':'ishdhdjkhei','share_address': '0xShareAddr1','recipient': '0xRecipientAddr1','company_address': '0xCompanyAddr1',
                   'expiration_date': '2023-12-31T23:59:59','strike_price': 3.14,'vesting': [['2020-01-01T15:00:20', 100], ['2021-01-01T15:00:20', 200]],
                   'executions':[['2020-03-01T15:00:20', 40], ['2021-02-01T15:00:20', 90]],'post_termination_exercise_window': 90}},
@@ -177,6 +23,12 @@ const EmployeeDashboard = () => {
                 'future': 1000,
                 'available': 1600,
                 'exercised': 400},
+
+
+
+
+
+
               'agreement': {
                 'agreement_id':'iodudydio',
                 'share_address': '0xShareAddr2',
@@ -202,6 +54,35 @@ const EmployeeDashboard = () => {
                 'vesting': [['2020-01-01T15:00:20', 300], ['2021-01-01T15:00:20', 600]],
                 'post_termination_exercise_window': 270}}]
 
+    let totalExecutedArray = []
+    let totalVestedArray = []
+
+    
+    
+    
+    client_data.forEach(
+      function(agreement_data,index) {
+
+        let totalExecuted = 0
+        let totalVested = 0
+
+        totalExecutedArray.push([])
+        totalVestedArray.push([])
+
+        for(var i=0;i<client_data[index].agreement.vesting.length;++i){
+          totalVested+=client_data[index].agreement.vesting[i][1]
+          totalVestedArray[totalVestedArray.length-1].push(totalVested)
+        }
+    
+        for(var i=0;i<client_data[index].agreement.executions.length;++i){
+          totalExecuted+=client_data[index].agreement.executions[i][1]
+          totalExecutedArray[totalExecutedArray.length-1].push(totalExecuted)
+        }
+
+        
+
+
+    });
 
   let tableData = []
   client_data.forEach(
@@ -228,12 +109,11 @@ const EmployeeDashboard = () => {
   };
 
   // Filter tableData based on name and description filters
-  let initialFilteredData = tableData.filter((row) => {
+  const filteredData = tableData.filter((row) => {
     return row.Company.toLowerCase().includes(CompanyFilter.toLowerCase()) &&
            row.Share.toLowerCase().includes(ShareFilter.toLowerCase());
   });
 
-  const [filteredData, setFilteredData] = useState(initialFilteredData);
 
   const [inputValue, setInputValue] = useState(0);
 
@@ -254,29 +134,11 @@ const EmployeeDashboard = () => {
    * Handles the 'EXECUTE' button click event.
    * Implement the desired functionality for when the button is clicked.
    */
-  const getHandleExecuteClick = (index) => {
-    return () => {
-      let amountStocks = inputValue;
-      let strikePrice = filteredData[index].PricePerShare;
-      let agreement_address = filteredData[index].ContractID;
-      
-      tezos.wallet
-      .at(agreement_address)
-      .then((c) => {
-        return c.methodsObject
-          .execute(amountStocks)
-          .send({amount: amountStocks*strikePrice, mutez:true});
-      })
-      .then((op) => {
-        console.log(`Waiting for ${op.opHash} to be confirmed...`);
-        return op.confirmation(3).then(() => op.opHash);
-      })
-      .then((hash) => console.log(`Operation injected: ${hash}`))
-      .catch((error) => console.log(`Error: ${error}`));
+  const handleExecuteClick = () => {
+    console.log('Execute with value:', inputValue);
+    // Place the logic you want to execute with the inputValue here
+  };
 
-    };   
-  }
-  
 
 
 // Custom hook to generate timestamps
@@ -319,15 +181,21 @@ const MixedChart = () => {
       //let optionsVestedData = client_data[0].agreement.vesting[0]
 
       let optionsVestedData = []
+      let sum = 0 
       client_data[0].agreement.vesting.forEach(
         function(data) {
-          optionsVestedData.push(data[1])
+          sum+=data[1]
+          optionsVestedData.push(sum)
       });
 
+
+
       let optionsExecutedData = []
+      sum=0
       client_data[0].agreement.executions.forEach(
         function(data) {
-          optionsExecutedData.push(data[1])
+          sum+=data[1]
+          optionsExecutedData.push(sum)
       });
 
 
@@ -681,7 +549,6 @@ const Graphs = () => {
   <body>
 
 </body>
-<MenuBar />
   <div className="dashboardContainer">
     <table className="dashboardTable">
       <thead>
@@ -769,8 +636,8 @@ const Graphs = () => {
                     <td colSpan="7" className="detailRow">
                         <div className="rowContainer">
                                 <p><strong>TOTAL GRANTED:</strong> {row.Granted}</p>
-                                <p><strong>VESTED:</strong> {row.Vested}</p>
-                                <p><strong>EXERCISED:</strong> {row.Exercised}</p>
+                                <p><strong>VESTED:</strong> {totalVestedArray[index][totalVestedArray[index].length-1]}</p>
+                                <p><strong>EXERCISED:</strong> {totalExecutedArray[index][totalExecutedArray[index].length-1]}</p>
                                 <div className="actionContainer">
                                   <table>
                                     <tr>
@@ -790,7 +657,7 @@ const Graphs = () => {
                                         />
                                       </td>
                                       <td>
-                                        <button className="executeButton" onClick={getHandleExecuteClick(index)}>EXECUTE</button>
+                                        <button className="executeButton" onClick={handleExecuteClick}>EXECUTE</button>
                                       </td>
                                     </tr>
                                   </table>
