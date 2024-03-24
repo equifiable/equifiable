@@ -50,9 +50,10 @@ function MenuBar() {
   const account = useAccountPkh(); 
   const navigate = useNavigate();
 
-  const logout = () => {
+  const logout =  () => {
     localStorage.removeItem("account");
     navigate("/");
+    window.location.reload();
   }
 
   return (

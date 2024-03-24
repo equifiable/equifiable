@@ -8,7 +8,6 @@ import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { useTezos, useAccountPkh } from '../../../dappstate';
 
 
-
 Chart.register(...registerables);
 
 const EmployeeDashboard = () => {
@@ -539,6 +538,7 @@ const Graphs = () => {
   <body>
 
 </body>
+<MenuBar />
   <div className="dashboardContainer">
     <table className="dashboardTable">
       <thead>
