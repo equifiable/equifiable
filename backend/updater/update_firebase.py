@@ -16,7 +16,26 @@ from tktz_api import *
 from management import DatabaseManagement
 from database import *
 
-def calculateBalance(agreement_details):
+def transformExecutionList(agreement_details: dict):
+
+    execution_list = []
+    to_be_deleted = []
+    for key in agreement_details:
+        if key.startswith("executions"):
+            to_be_deleted.append(key)
+            entry = agreement_details[key]
+            if not entry: continue
+            timestamp = list(entry.keys())[0]
+            execution_amount = float(list(entry.values())[0])
+            execution_list.append({"timestamp":timestamp, "nat":execution_amount})
+
+    for key in to_be_deleted:
+        del agreement_details[key]
+    
+    agreement_details.update({'executions': execution_list})
+
+
+def calculateBalance(agreement_details: dict):
     termination_date = agreement_details['termination_date']
     if termination_date is not None:
         termination_date = datetime.fromisoformat(termination_date[:-1] + '.000000')
@@ -80,6 +99,7 @@ for single_agreement in agreements:
     ledger_dict = {'ledger': ledger_values}
 
     balance = calculateBalance(agreement_details)
+    transformExecutionList(agreement_details)
 
     client.child('Recipients').child(recipient).child('agreements').child(single_agreement).set(agreement_details | balance)
     client.child('Companies').child(company).child('agreements').child(single_agreement).set(agreement_details | balance)
