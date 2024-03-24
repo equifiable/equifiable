@@ -114,7 +114,7 @@ function App() {
     <DAppProvider appName='equifiable'>
       <Router>
         <Routes>
-          <Route path="/" element={<DecisionPage />} />
+          <Route path="/" element={<LPage />} />
           <Route path="/decision" element={<DecisionPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<LogIn />} />
