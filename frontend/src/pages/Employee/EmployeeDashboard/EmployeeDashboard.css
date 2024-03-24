@@ -1,203 +1,237 @@
 .dashboardContainer {
-    max-width: 960px;
-    margin: auto;
-    padding: 20px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    color: #333;
-  }
-  
-  .dashboardTable {
-    width: 100%;
-    border-collapse: collapse;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-  }
-  
-  .dashboardTable thead th {
-    background-color: #f5f5f7;
-    text-align: left;
-    padding: 8px;
-  }
-  
-  .dashboardTable tbody tr:nth-child(odd) {
-    background-color: #fafafa;
-  }
-  
-  .dashboardTable tbody tr:hover {
-    background-color: #e8f4fd;
-  }
-  
-  .dashboardTable td, .dashboardTable th {
-    padding: 8px;
-    text-align: left;
-  }
-  
+  max-width: 960px;
+  background-size: cover;
+background-position: center;
+  margin: auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #333;
+}
+
+.dashboardTable {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.dashboardTable thead th {
+  background-color: #f5f5f7;
+  text-align: left;
+  padding: 8px;
+}
+
+.dashboardTable tbody tr:nth-child(odd) {
+  background-color: #fafafa;
+}
+
+.dashboardTable tbody tr:hover {
+  background-color: #e8f4fd;
+}
+
+.dashboardTable td, .dashboardTable th {
+  padding: 8px;
+  text-align: left;
+}
+
 
 /* Styles the overall dashboard, centering its content */
 .dashboardContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; 
-    text-align: center;
-  }
-  
-  /* Enhances the visual appearance of the table, making it more table-like */
-  .dashboardTable {
-    border: 1px solid #ccc;
-    border-collapse: collapse;
-    margin: 0 auto; 
-    background-color: #fff; 
-  }
-  
-  .dashboardTable thead tr {
-    background-color: #f5f5f7; 
-    border-bottom: 2px solid #eee; 
-  }
-  
-  .dashboardTable th, .dashboardTable td {
-    padding: 15px; 
-    border: 1px solid #ddd;
-  }
-  
-  
-  .dashboardTable tbody tr:hover {
-    background-color: #e8f4fd;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+  text-align: center;
+}
+
+/* Enhances the visual appearance of the table, making it more table-like */
+.dashboardTable {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0 auto; 
+  background-color: #fff; 
+}
+
+.dashboardTable thead tr {
+  background-color: #f5f5f7; 
+  border-bottom: 2px solid #eee; 
+}
+
+.dashboardTable th, .dashboardTable td {
+  padding: 15px; 
+  border: 1px solid #ddd;
+}
+
+
+.dashboardTable tbody tr:hover {
+  background-color: #e8f4fd;
+}
+
 
 /* Overall container for the dashboard, providing a consistent base for the design */
 .dashboardContainer {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    color: #333;
-  }
-  
-  /* Styles for the dashboard table to make it visually appealing and readable */
-  .dashboardTable {
-    width: 100%;
-    border-collapse: collapse;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Header row of the table, giving it a distinct look to differentiate from body rows */
-  .dashboardTable thead {
-    background-color: #f5f5f7;
-    text-align: left;
-  }
-  
-  /* Styling table rows for hover effects to improve interactivity and user experience */
-  .dashboardTable tbody tr:hover {
-    background-color: #e8f4fd;
-  }
-  
-  /* Specific class for rows that can be clicked, changing cursor to indicate interactivity */
-  .tableRow {
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  /* Container for row details, including chart and additional information, styled for clarity and separation from other content */
-  .detailRow {
-    padding: 0;
-  }
-  
-  /* Flex container to hold the chart and additional info side by side */
-  .rowContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: #ffffff;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-  }
-  
-  /* Chart container to ensure the chart is displayed correctly and attractively */
-  .chartContainer {
-    width: 48%;
-    height: 200px;
-  }
-  
-  /* Styling for the additional information section, making it visually distinct and aligned with modern design principles */
-  .additionalInfo {
-    width: 48%;
-    background-color: #f5f5f7;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  
-  /* Styling for headings within the additional information to ensure they stand out appropriately */
-  .additionalInfo h3 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    color: #007aff;
-    font-size: 18px;
-  }
-  
-  /* Ensure consistent and readable text styling within the additional information section */
-  .additionalInfo p {
-    margin-bottom: 10px;
-    font-size: 16px;
-  }
-  
-  /* Last paragraph in the additional information section doesn't have a bottom margin */
-  .additionalInfo p:last-child {
-    margin-bottom: 0;
-  }
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #333;
+}
+
+/* Styles for the dashboard table to make it visually appealing and readable */
+.dashboardTable {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Header row of the table, giving it a distinct look to differentiate from body rows */
+.dashboardTable thead {
+  background-color: #f5f5f7;
+  text-align: left;
+}
+
+/* Styling table rows for hover effects to improve interactivity and user experience */
+.dashboardTable tbody tr:hover {
+  background-color: #e8f4fd;
+}
+
+/* Specific class for rows that can be clicked, changing cursor to indicate interactivity */
+.tableRow {
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Container for row details, including chart and additional information, styled for clarity and separation from other content */
+.detailRow {
+  padding: 0;
+}
+
+/* Flex container to hold the chart and additional info side by side */
+.rowContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+/* Chart container to ensure the chart is displayed correctly and attractively */
+.chartContainer {
+  width: 48%;
+  height: 200px;
+}
+
+/* Styling for the additional information section, making it visually distinct and aligned with modern design principles */
+.additionalInfo {
+  width: 48%;
+  background-color: #f5f5f7;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Styling for headings within the additional information to ensure they stand out appropriately */
+.additionalInfo h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #007aff;
+  font-size: 18px;
+}
+
+/* Ensure consistent and readable text styling within the additional information section */
+.additionalInfo p {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+/* Last paragraph in the additional information section doesn't have a bottom margin */
+.additionalInfo p:last-child {
+  margin-bottom: 0;
+}
 
 
-  .actionContainer {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 20px;
-    background-color: #f2f2f7; /* A light grey background for slight contrast */
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+.actionContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px;
+  background-color: #f2f2f7; /* A light grey background for slight contrast */
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
 }
 
 .numericInput {
-    font-size: 16px;
-    padding: 10px;
-    border: 1px solid #d1d1d6; /* Slightly darker border for definition */
-    border-radius: 8px;
-    outline: none; /* Removes default focus outline */
-    width: 100px; /* Fixed width for consistency */
-    background-color: white; /* Ensures background consistency */
-    text-align: center; /* Centers text for a clean look */
+  font-size: 16px;
+  padding: 10px;
+  border: 1px solid #d1d1d6; /* Slightly darker border for definition */
+  border-radius: 8px;
+  outline: none; /* Removes default focus outline */
+  width: 100px; /* Fixed width for consistency */
+  background-color: white; /* Ensures background consistency */
+  text-align: center; /* Centers text for a clean look */
 }
 
 .numericInput:focus {
-    border-color: #007aff; /* Blue border on focus, typical iOS accent color */
-    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.25); /* Soft glow effect for focus */
+  border-color: #007aff; /* Blue border on focus, typical iOS accent color */
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.25); /* Soft glow effect for focus */
 }
 
 .executeButton {
-    background-color: #007aff; /* iOS blue for primary actions */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer; /* Indicates interactivity */
-    transition: background-color 0.3s ease; /* Smooth transition for interaction */
+  background-color: #007aff; /* iOS blue for primary actions */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer; /* Indicates interactivity */
+  transition: background-color 0.3s ease; /* Smooth transition for interaction */
 }
 
 .executeButton:hover {
-    background-color: #005ecb; /* Slightly darker on hover for feedback */
+  background-color: #005ecb; /* Slightly darker on hover for feedback */
 }
 
 .executeButton:active {
-    background-color: #004ba0; /* Even darker on click for tactile feedback */
+  background-color: #004ba0; /* Even darker on click for tactile feedback */
 }
 
 .executeButton:focus {
-    outline: none; /* Removes default focus outline, but consider accessibility alternatives */
-    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.5); /* Focus glow for accessibility */
+  outline: none; /* Removes default focus outline, but consider accessibility alternatives */
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.5); /* Focus glow for accessibility */
 }
 
-  
+/* Style for the table cell that prompts the user */
+.promptCell {
+padding: 20px; /* Ample space around the content for a clean look */
+text-align: center; /* Center the text horizontally */
+background-color: #f2f2f7; /* Light grey background for subtle contrast */
+border-bottom: 1px solid #d1d1d1; /* Fine border line for separation */
+}
+
+/* Style for the prompt text */
+.promptText {
+margin: 0; /* Remove default margin to precisely control spacing */
+color: #1d1d1f; /* Dark grey color for text, ensuring good readability */
+font-size: 18px; /* Slightly larger font size for clarity */
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* System fonts for a native look */
+font-weight: normal; /* Standard font weight for simplicity and readability */
+}
+
+.chartContainer {
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+}
+
+.chartHalfWidth {
+flex: 1 1 50%; /* Makes each of these charts take up half of the container's width */
+padding: 10px; /* Adds some spacing around the charts */
+}
+
+.chartFullWidth {
+flex: 1 1 100%; /* Makes this chart span the full width of the container */
+padding: 10px; /* Adds some spacing around the chart */
+}
+
