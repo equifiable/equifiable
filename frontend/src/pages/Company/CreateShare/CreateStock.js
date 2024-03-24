@@ -120,7 +120,7 @@ export default function CreateESOP() {
       return tezos.wallet.at(contract.address);
     }).then((c) => {
       return c.methodsObject.approve({
-        spender: 'KT1ScikyYNRqLneQrPVgT7zF4FFfeen7pRhE', 
+        spender: 'KT1V53JYPRhBjyoCFXcr9kMCQVDtPoRrs9Bp', 
         value: valueRef.current.value
       }).send();
     }).then(()=> {setOpen(true)})
