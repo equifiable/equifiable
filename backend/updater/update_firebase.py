@@ -16,6 +16,39 @@ from tktz_api import *
 from management import DatabaseManagement
 from database import *
 
+def calculateBalance(agreement_details):
+    termination_date = agreement_details['termination_date']
+    if termination_date is not None:
+        termination_date = datetime.fromisoformat(termination_date[:-1] + '.000000')
+    expiration_date = datetime.fromisoformat(agreement_details['expiration_date'][:-1] + '.000000')
+    exercised_tokens = float(agreement_details['exercised_tokens'])
+
+    vested_tokens = 0
+    granted_tokens = 0
+    now = datetime.now()
+
+    for pair in agreement_details['vesting']:
+        timestamp = datetime.fromisoformat(pair['timestamp'][:-1] + '.000000')
+        if termination_date is None:
+            beforeTermination = True
+        else:
+            beforeTermination = timestamp <= termination_date
+        vested = (timestamp < now) and beforeTermination
+        vested_tokens += float(pair['nat']) if (vested) else 0
+        granted_tokens += float(pair['nat'])
+
+    available_tokens = (vested_tokens - exercised_tokens)
+    future_tokens = (granted_tokens - vested_tokens)
+
+    balance = {
+        'granted': granted_tokens,
+        'exercised': exercised_tokens,
+        'available': available_tokens,
+        'future': future_tokens,
+    }
+
+    return balance
+
 load_dotenv()
 connect_to_database()
 
@@ -46,9 +79,10 @@ for single_agreement in agreements:
     ledger_values = get_ledger_values(_ptr)
     ledger_dict = {'ledger': ledger_values}
 
-    
-    client.child('Recipients').child(recipient).child('agreements').child(single_agreement).set(agreement_details | ledger_dict)
-    client.child('Companies').child(company).child('agreements').child(single_agreement).set(agreement_details | ledger_dict)
+    balance = calculateBalance(agreement_details)
 
-    client.child('Shares').child(share).child('infos').set({'ledger': ledger_values})
+    client.child('Recipients').child(recipient).child('agreements').child(single_agreement).set(agreement_details | balance)
+    client.child('Companies').child(company).child('agreements').child(single_agreement).set(agreement_details | balance)
+
+    client.child('Shares').child(share).set(ledger_dict)
 
