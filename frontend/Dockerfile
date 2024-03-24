@@ -31,6 +31,9 @@ RUN apt-get clean && \
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
+
+FROM node:18.19.1
+
 # Install app dependencies
 RUN npm install
 
