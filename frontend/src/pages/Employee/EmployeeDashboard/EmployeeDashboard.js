@@ -16,7 +16,9 @@ const EmployeeDashboard = () => {
 
 
   let client_data = [{'record_balances': {'granted': 1000,'future': 500,'available': 800,'exercised': 200},
-                  'agreement': {'agreement_id':'ishdhdjkhei','share_address': '0xShareAddr1','recipient': '0xRecipientAddr1','company_address': '0xCompanyAddr1','expiration_date': '2023-12-31T23:59:59','strike_price': 3.14,'vesting': [['2020-01-01T15:00:20', 100], ['2021-01-01T15:00:20', 200]],'post_termination_exercise_window': 90}},
+                  'agreement': {'agreement_id':'ishdhdjkhei','share_address': '0xShareAddr1','recipient': '0xRecipientAddr1','company_address': '0xCompanyAddr1',
+                  'expiration_date': '2023-12-31T23:59:59','strike_price': 3.14,'vesting': [['2020-01-01T15:00:20', 100], ['2021-01-01T15:00:20', 200]],
+                  'executions':[['2020-03-01T15:00:20', 40], ['2021-02-01T15:00:20', 90]],'post_termination_exercise_window': 90}},
               {'record_balances': {'granted': 2000,
                 'future': 1000,
                 'available': 1600,
@@ -29,6 +31,7 @@ const EmployeeDashboard = () => {
                 'expiration_date': '2023-12-31T23:59:59',
                 'strike_price': 6.28,
                 'vesting': [['2020-01-01T15:00:20', 200], ['2021-01-01T15:00:20', 400]],
+                'executions':[['2020-01-01T15:00:20', 100], ['2021-01-01T15:00:20', 200]],
                 'post_termination_exercise_window': 180}},
               {'record_balances': {'granted': 3000,
                 'future': 1500,
@@ -40,6 +43,7 @@ const EmployeeDashboard = () => {
                 'recipient': '0xRecipientAddr3',
                 'company_address': '0xCompanyAddr3',
                 'expiration_date': '2023-12-31T23:59:59',
+                'executions':[['2020-01-01T15:00:20', 100], ['2021-01-01T15:00:20', 200]],
                 'strike_price': 9.42,
                 'vesting': [['2020-01-01T15:00:20', 300], ['2021-01-01T15:00:20', 600]],
                 'post_termination_exercise_window': 270}}]
@@ -102,19 +106,18 @@ const EmployeeDashboard = () => {
 
 
 
-  // Custom hook to generate timestamps
+// Custom hook to generate timestamps
 const useGenerateTimestamps = () => {
   const [timestamps, setTimestamps] = useState([]);
 
   useEffect(() => {
     const generateTimestamps = () => {
       let tempTimestamps = [];
-      let startDate = new Date('2022-09-01'); // Start from September 2022
-      let endDate = new Date('2026-09-01'); // End at September 2026
-
-      for (let date = startDate; date <= endDate; date.setMonth(date.getMonth() + 1)) {
-        tempTimestamps.push(date.getTime() / 1000); // Convert to Unix timestamp in seconds
-      }
+      client_data[0].agreement.vesting.forEach(
+        function(data) {
+          // Directly store the parsed date (in milliseconds) in the array
+          tempTimestamps.push(Date.parse(data[0]));
+      });
 
       setTimestamps(tempTimestamps);
     };
@@ -140,13 +143,27 @@ const MixedChart = () => {
       //const ctx = chartRef.current.getContext('2d');
       
       // Dados fictícios para os datasets, substitua conforme necessário
-      const optionsVestedData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 700, 750, 800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200, 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850, 1900];
-      const optionsExecutedData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 650, 700, 750, 800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200, 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850];
-      const optionsGrantedData = Array(38).fill(1900);
+      //let optionsVestedData = client_data[0].agreement.vesting[0]
+
+      let optionsVestedData = []
+      client_data[0].agreement.vesting.forEach(
+        function(data) {
+          optionsVestedData.push(data[1])
+      });
+
+      let optionsExecutedData = []
+      client_data[0].agreement.executions.forEach(
+        function(data) {
+          optionsExecutedData.push(data[1])
+      });
+
+
+      
+      const optionsGrantedData = Array(client_data[0].agreement.vesting.length).fill(client_data[0].record_balances.granted);
       
       // Convertendo timestamps para rótulos legíveis
       const labels = timestamps.map(timestamp => {
-        const date = new Date(timestamp * 1000);
+        const date = new Date(timestamp);
         return `${date.toLocaleString('default', { month: 'short' })}-${date.getFullYear()}`;
       });
 
@@ -169,7 +186,7 @@ const MixedChart = () => {
               fill: true,
               pointRadius: 1,
               pointHoverRadius: 1
-            }, 
+            },
             { 
               data: optionsVestedData,
               type: "line",
@@ -234,7 +251,7 @@ const MixedChart = () => {
 }, [timestamps]); // Re-run effect if timestamps change
 
   return (
-    <div style={{ maxWidth: '35%', height:'400px',margin: 'auto' }}>
+    <div style={{ maxWidth: '75%', height:'500px',margin: 'auto' }}>
     <canvas ref={chartRef}></canvas>
     </div>
     );
@@ -246,11 +263,17 @@ const MixedChart = () => {
   
     useEffect(() => {
       // Assuming the calculation for vested and executed shares is handled outside and data is static for demonstration
-      const optionsVestedData = [350, 650]; // Example vested data [currentVestedShares, remainder]
-      const totalGrantedShares = 1000; // Total shares for example
+      //const optionsVestedData = [350, 650]; // Example vested data [currentVestedShares, remainder]
+      let optionsVestedData = []
+      client_data[0].agreement.vesting.forEach(
+        function(data) {
+          optionsVestedData.push(data[1])
+      });
+
+      const totalGrantedShares = client_data[0].record_balances.granted; // Total shares for example
   
       // Calculate vesting percentage
-      const vestingPercentage = (optionsVestedData[0] / totalGrantedShares) * 100;
+      const vestingPercentage = (optionsVestedData[optionsVestedData.length-1] / totalGrantedShares) * 100;
   
       const vestedData = {
         labels: ['Vested Shares', 'Remaining'],
@@ -283,6 +306,9 @@ const MixedChart = () => {
                   }
                 }
               },
+              customTextInsideDoughnut:{
+                text:'50%'
+              },
               legend: {
                 display: true // Adjust based on your requirement
               }
@@ -296,7 +322,7 @@ const MixedChart = () => {
         Chart.register({
           id: 'customTextInsideDoughnut',
           beforeDraw: function(chart) {
-            if (chart.config.type === 'doughnut') {
+            if (chart.config.type === 'doughnut' && chart.canvas.id === 'doughnutChartVesting') {
               const ctx = chart.ctx,
                     width = chart.width,
                     height = chart.height;
@@ -304,10 +330,15 @@ const MixedChart = () => {
               let fontSize = (height / 114).toFixed(2);
               ctx.font = `${fontSize}em sans-serif`;
               ctx.textBaseline = "middle";
-              const text = `${vestingPercentage.toFixed(2)}%`,
+              const text = Math.floor(vestingPercentage+0.5)+"%",
                     textX = Math.round((width - ctx.measureText(text).width) / 2),
-                    textY = height / 2;
-              ctx.fillText(text, textX, textY);
+                    textY = height / 1.7;
+              ctx.fillText(text, textX, textY-15);
+              fontSize = (height / 480).toFixed(2);
+              ctx.font = `${fontSize}em sans-serif`;
+              ctx.textBaseline = "middle";
+              const vestedtext = "Total Vested Shares";
+              ctx.fillText(vestedtext, textX, textY+25);
               ctx.save();
             }
           }
@@ -320,7 +351,7 @@ const MixedChart = () => {
   
     return (
       <div style={{ maxWidth: '50%', height: '400px', margin: 'auto' }}>
-        <canvas ref={chartRefa}></canvas>
+        <canvas id="doughnutChartVesting" ref={chartRefa}></canvas>
       </div>
     );
   };
@@ -330,82 +361,139 @@ const MixedChart = () => {
 
 // DoughnutChartComponent
 const DoughnutChartComponent = () => {
-  const chartRef = useRef(null);
+  const chartRefaa = useRef(null);
   const timestamps = useGenerateTimestamps();
 
   useEffect(() => {
-    // Assuming you have functions and data setup as needed
-    const optionsExecutedData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 650, 700, 750, 800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200, 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850];
-    const today = new Date();
-    const currentMonth = today.getMonth();
-    const currentYear = today.getFullYear();
-    function getCurrentMonthDataIndex(data, targetMonth, targetYear) {
-      const timestamps = data.map(timestamp => new Date(timestamp * 1000)); // Convert timestamps to dates (assuming timestamps are in seconds)
-      
-      for (let i = 0; i < timestamps.length; i++) {
-        if (timestamps[i].getMonth() === targetMonth && timestamps[i].getFullYear() === targetYear) {
-          return i;
-        }
-      }
-      
-      // Handle case where target month/year not found in data
-      console.error("Target month and year not found in data!");
-      return -1; // Or return any appropriate value to indicate not found
-    }
-    
-    // You would define getCurrentMonthDataIndex, timestamps, optionsExecutedData, and optionsVestedData here or import them
-    const currentMonthIndex = getCurrentMonthDataIndex(timestamps, currentMonth, currentYear);
-    const currentExecutedShares = optionsExecutedData[currentMonthIndex];
-    const totalGrantedShares = optionsExecutedData[optionsExecutedData.length - 1];
-    const executingPercentage = (currentExecutedShares / totalGrantedShares) * 100;
+    // Assuming the calculation for vested and executed shares is handled outside and data is static for demonstration
+    //const optionsVestedData = [350, 650]; // Example vested data [currentVestedShares, remainder]
+    let optionsExecutedData = []
+    client_data[0].agreement.executions.forEach(
+      function(data) {
+        optionsExecutedData.push(data[1])
+    });
+
+    const totalGrantedShares = client_data[0].record_balances.granted; // Total shares for example
+
+    // Calculate vesting percentage
+    const executingPercentage = (optionsExecutedData[optionsExecutedData.length-1] / totalGrantedShares) * 100;
 
     const executedData = {
-      labels: [`Executed Shares`],
+      labels: ['Executed Shares', 'Remaining'],
       datasets: [{
         data: [executingPercentage, 100 - executingPercentage],
-        backgroundColor: ['#f8ae49', 'white'],
-        hoverBackgroundColor: ['#f8ae49', 'white'],
+        backgroundColor: ['#f8ae49', '#e9ecef'],
+        hoverBackgroundColor: ['#eb8c09', '#dde2e6']
       }]
     };
 
-    const doughnutChart = chartRef.current ? new Chart(chartRef.current.getContext('2d'), {
-      type: 'doughnut',
-      data: executedData,
-      options: {
-        plugins: {
-          title: {
-            display: true,
-            text: 'Current Executing Percentage'
-          },
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                const label = context.label;
-                const total = context.dataset.data.reduce((prev, curr) => prev + curr, 0);
-                const currentValue = context.raw;
-                const percentage = Math.floor(((currentValue / total) * 100) + 0.5);
-                return `${label}: ${percentage}%`;
+    if (chartRefaa.current) {
+      const ctx = chartRefaa.current.getContext('2d');
+      
+      // Initialize the doughnut chart
+      const doughnutChartcomponent = new Chart(ctx, {
+        type: 'doughnut',
+        data: executedData,
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: 'Current Executing Percentage'
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const label = context.label;
+                  const percentage = context.raw.toFixed(2);
+                  return `${label}: ${percentage}%`;
+                }
               }
+            },
+            customTextInsideDoughnutcomponent:{
+              text:'50%'
             }
-          }
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-        rotation: 0.5 * Math.PI
-      }
-    }) : null;
+            ,
+            legend: {
+              display: true // Adjust based on your requirement
+            }
+          },
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
 
-    // Cleanup function to destroy chart instance on component unmount
-    return () => {
-      if (doughnutChart) {
-        doughnutChart.destroy();
-      }
-    };
+      // Register a custom plugin if needed for displaying text inside the doughnut
+      Chart.register({
+        id: 'customTextInsideDoughnutcomponent',
+        beforeDraw: function(chart) {
+          if (chart.config.type === 'doughnut' && chart.canvas.id === 'doughnutChartExecuting') {
+            const ctx = chart.ctx,
+                  width = chart.width,
+                  height = chart.height;
+            ctx.restore();
+            var fontSize = (height / 114).toFixed(2);
+            ctx.font = `${fontSize}em sans-serif`;
+            ctx.textBaseline = "middle";
+            var text = Math.floor(executingPercentage+0.5)+"%",
+                  textX = Math.round((width - ctx.measureText(text).width) / 2),
+                  textY = height / 1.7;
+            ctx.fillText(text, textX, textY-15);
+            var fontSize = (height / 480).toFixed(2);
+            ctx.font = `${fontSize}em sans-serif`;
+            ctx.textBaseline = "middle";
+            const executedtext = "Total Executed Shares";
+            var textX = Math.round((width - ctx.measureText(executedtext).width) / 2);
+            ctx.fillText(executedtext, textX, textY+25);
+            ctx.save();
+          }
+        }
+      });
+
+      // Cleanup on component unmount
+      return () => doughnutChartcomponent.destroy();
+    }
   }, [timestamps]); // Depend on variables that might change your chart data
 
   return (
     <div style={{ maxWidth: '50%', height: '400px', margin: 'auto' }}>
-      <canvas ref={chartRef}></canvas>
+      <canvas id="doughnutChartExecuting" ref={chartRefaa}></canvas>
+    </div>
+  );
+};
+
+
+const Graphs = () => {
+  // Define styles for the containers
+  const rowStyle = {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  };
+
+  const halfWidthStyle = {
+    width: '50%', // Each chart takes up half the width of its container
+  };
+
+  const fullWidthStyle = {
+    width: '100%', // Chart takes up the full width of its container
+  };
+
+  return (
+    <div>
+      {/* Row for the two Doughnut charts */}
+      <div style={rowStyle}>
+        <div style={halfWidthStyle}>
+          {DoughnutChart()}
+        </div>
+        <div style={halfWidthStyle}>
+          {DoughnutChartComponent()}
+        </div>
+      </div>
+
+      {/* Row for the Mixed chart */}
+      <div style={fullWidthStyle}>
+        {MixedChart()}
+      </div>
     </div>
   );
 };
@@ -429,12 +517,7 @@ const DoughnutChartComponent = () => {
   </div>
 
 </body>
-
-
-  {DoughnutChart()}
-  {MixedChart()}
-  {DoughnutChartComponent()}
-
+{Graphs()}
   <div className="dashboardContainer">
     <table className="dashboardTable">
       <thead>

@@ -217,6 +217,21 @@
   font-weight: normal; /* Standard font weight for simplicity and readability */
 }
 
+.chartContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.chartHalfWidth {
+  flex: 1 1 50%; /* Makes each of these charts take up half of the container's width */
+  padding: 10px; /* Adds some spacing around the charts */
+}
+
+.chartFullWidth {
+  flex: 1 1 100%; /* Makes this chart span the full width of the container */
+  padding: 10px; /* Adds some spacing around the chart */
+}
 
 
 
