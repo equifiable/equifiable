@@ -30,13 +30,13 @@ set_mockup_now(now)
 
 /* Scenario ---------------------------------------------------------------- */
 
-describe('[SUBSCRIPTION] Contract deployment', () => {
+describe('[SMART-CONTRACT: SUBSCRIPTION] Contract deployment', () => {
   it('Deploy test_binding', async () => {
     await subscription.deploy(alice.get_address(),{as:alice})
   });
 })
 
-describe('[SUBSCRIPT] Call subscribe type 1', () => {
+describe('[SMART-CONTRACT: SUBSCRIPTION] Call subscribe type 1', () => {
   it("Call 'subscribe type 1'", async () => {
     await subscription.subscribe(token_id1,{amount:value1, as: alice})
     const aliceUser = await subscription.get_User();
@@ -46,7 +46,7 @@ describe('[SUBSCRIPT] Call subscribe type 1', () => {
   })
 })
 
-describe('[SUBSCRIPT] Call payBill type 1', () => {
+describe('[SMART-CONTRACT: SUBSCRIPTION] Call payBill type 1', () => {
   it("Call 'payBill type 1'", async () => {
     await subscription.payBill({amount:value1, as: alice})
     const aliceUser = await subscription.get_User();
@@ -55,7 +55,7 @@ describe('[SUBSCRIPT] Call payBill type 1', () => {
   })
 })
 
-describe('[SUBSCRIPT] Call subscribe type 2', () => {
+describe('[SMART-CONTRACT: SUBSCRIPTION] Call subscribe type 2', () => {
   it("Call 'subscribe type 2'", async () => {
     await subscription.subscribe(token_id2,{amount:value2, as:bob})
     const bobUser = await subscription.get_User();
@@ -65,7 +65,7 @@ describe('[SUBSCRIPT] Call subscribe type 2', () => {
   })
 })
 
-describe('[SUBSCRIPT] Call payBill type 2', () => {
+describe('[SMART-CONTRACT: SUBSCRIPTION] Call payBill type 2', () => {
   it("Call 'payBill type 2'", async () => {
     await subscription.payBill({amount:value2, as:bob});
     const bobUser = await subscription.get_User();
@@ -74,7 +74,7 @@ describe('[SUBSCRIPT] Call payBill type 2', () => {
   })
 })
 
-describe('[SUBSCRIPT] Call cancelSubscription', () => {
+describe('[SMART-CONTRACT: SUBSCRIPTION] Call cancelSubscription', () => {
   it("Call 'CancelSubscription'", async () => {
     await subscription.cancelSubscription({as:bob});
     const User = await subscription.get_User();
@@ -83,7 +83,7 @@ describe('[SUBSCRIPT] Call cancelSubscription', () => {
 })
 
 
-describe('[SUBSCRIPT] Call subscribe type 2 - already added!', () => {
+describe('[SMART-CONTRACT: SUBSCRIPTION] Call subscribe type 2 - already added!', () => {
   it("Call 'subscribe type 2' - ERROR", async () => {
     assert.rejects( 
       async () => subscription.subscribe(token_id2,{amount:value2, as:alice}), 
@@ -92,7 +92,7 @@ describe('[SUBSCRIPT] Call subscribe type 2 - already added!', () => {
   })
 })
 
-describe('[SUBSCRIPT] Call subscribe type 2 - wrong price!', () => {
+describe('[SMART-CONTRACT: SUBSCRIPTION] Call subscribe type 2 - wrong price!', () => {
   it("Call 'subscribe type 2 - ERROR'", async () => {
     assert.rejects( 
       async () => subscription.subscribe(token_id2,{amount:value3, as:bob}), 
@@ -102,7 +102,7 @@ describe('[SUBSCRIPT] Call subscribe type 2 - wrong price!', () => {
 })
 
 
-describe('[SUBSCRIPT] Call payBill type 1 - late payment!', () => {
+describe('[SMART-CONTRACT: SUBSCRIPTION] Call payBill type 1 - late payment!', () => {
   it("Call 'payBill type 1' - ERROR", async () => {
     delay_mockup_now_by_day(60);
     assert.rejects( 
