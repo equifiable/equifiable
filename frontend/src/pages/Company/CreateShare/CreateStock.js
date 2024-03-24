@@ -117,8 +117,14 @@ export default function CreateESOP() {
       console.log(contract);
       console.log(`Origination completed.`);
       set_tokenized_share_address(contract.address);
-      setOpen(true);      
-    }).catch((error) => console.log(`Error: ${JSON.stringify(error, null, 2)}`));
+      return tezos.wallet.at(contract.address);
+    }).then((c) => {
+      return c.methodsObject.approve({
+        spender: 'KT1ScikyYNRqLneQrPVgT7zF4FFfeen7pRhE', 
+        value: valueRef.current.value
+      }).send();
+    }).then(()=> {setOpen(true)})
+    .catch((error) => console.log(`Error: ${JSON.stringify(error, null, 2)}`));
   }
   
   return (

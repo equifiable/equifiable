@@ -8,6 +8,7 @@ export function useSettings() {
     endpoint : 'https://rpc.ghostnet.teztnets.com',
     contract : '',
     show     : false,
+    factoryContract : 'KT1ScikyYNRqLneQrPVgT7zF4FFfeen7pRhE'
   });
 
   const setNetwork = (nw) => { setState((s) => {
