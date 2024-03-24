@@ -16,6 +16,7 @@ import PaymentForm from '../../../components/PaymentForm';
 import MenuBar from '../../../components/MenuBar';
 import { useTezos, useAccountPkh } from '../../../dappstate';
 import Sidebar from '../../../components/SideBar';
+import Footer from '../../../components/Footer';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {

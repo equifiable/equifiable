@@ -1,8 +1,17 @@
 import React from 'react';
 import './pricing.css'
+import MenuBar from '../../components/MenuBar';
+import Sidebar from '../../components/SideBar';
+import { Grid } from "@material-ui/core";
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 function PricingPage() {
   return (
+    <React.Fragment>
+    <CssBaseline />
+    <Grid container alignItem='center' justifyConcent='center'>
+    <MenuBar/>
+    <Sidebar/>
     <div className="container">
       <h1 className="text-center mt-5">Choose Your Plan</h1>
       <div className="row mt-5">
@@ -36,6 +45,8 @@ function PricingPage() {
         </div>
       </div>
     </div>
+    </Grid>
+    </React.Fragment>
   );
 }
 

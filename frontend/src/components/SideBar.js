@@ -16,13 +16,13 @@ function Sidebar() {
           </a>
         </li>
         <li className="sidebar-item">
-          <a href="#" className="sidebar-link">
-            Services
+          <a href="/company/createstock" className="sidebar-link">
+            Create Stock
           </a>
         </li>
         <li className="sidebar-item">
-          <a href="#" className="sidebar-link">
-            Contact
+          <a href="/company/pricing" className="sidebar-link">
+            Subscription
           </a>
         </li>
       </ul>

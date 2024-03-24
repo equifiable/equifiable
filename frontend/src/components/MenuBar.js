@@ -6,6 +6,7 @@ import { useTezos, useAccountPkh } from '../dappstate';
 import { IconButton } from '@mui/material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -62,6 +63,9 @@ function MenuBar() {
             <IconButton aria-label="delete" onClick={logout}>
               <ExitToAppIcon />
           </IconButton>
+          <Typography component="h1" variant="h4" align="center">
+            Equifiable
+          </Typography>
         </Toolbar>
     </AppBar>
   );

@@ -122,7 +122,8 @@ function App() {
           <Route path="/company/createesop" element={<CreateESOP />} />
           <Route path="/company/createstock" element={<CreateShare />} />
           <Route path="/company/dashboard" element={<CompanyDashboard />} />
-          <Route path="/employee/pricing" element={<EmployeeDashboard />} />
+          <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
+          <Route path="/company/pricing" element={<PricingBox />} />
           
         </Routes>
       </Router>
