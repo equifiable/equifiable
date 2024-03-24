@@ -2,12 +2,26 @@ from fastapi import FastAPI
 from dotenv import load_dotenv
 from database.database import connect_to_database
 from routers import users, recipients, shares, companies, auth
+from fastapi.middleware.cors import CORSMiddleware
+
+origins = [
+    "http://localhost:3000",
+]
+
 
 # Load environment variables from a .env file
 load_dotenv()
 
 # Initialize the FastAPI application
 app = FastAPI(title='Equifiable')
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Connect to the Firebase database
 connect_to_database()

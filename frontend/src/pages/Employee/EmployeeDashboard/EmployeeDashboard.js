@@ -8,6 +8,117 @@ import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { useTezos, useAccountPkh } from '../../../dappstate';
 
 
+const http = require('http');
+const options = {
+  hostname: '172.16.120.78',
+  port: 8000,
+  path: '/recipients',
+  method: 'GET',
+};
+
+// const req = async () => http.get(options, res => {
+//   let http_data = '';
+
+//   console.log(`statusCode: ${res.statusCode}`);
+
+//   res.on('data', (chunk) => {
+//     http_data += chunk;
+//   });
+
+//   res.on('end', () => {
+//     http_data = JSON.parse(http_data);
+//     let outputData;
+//     outputData = calculateOutputData(http_data);
+//     console.log(outputData)
+//     return outputData;
+//   });
+// }).on('error', error => {
+//   console.error(error);
+// });
+const req = () => new Promise((resolve, reject) => {
+  http.get(options, res => {
+    let http_data = '';
+
+    console.log(`statusCode: ${res.statusCode}`);
+
+    res.on('data', (chunk) => {
+      http_data += chunk;
+    });
+
+    res.on('end', () => {
+      try {
+        http_data = JSON.parse(http_data);
+        const outputData = calculateOutputData(http_data);
+        console.log(outputData);
+        resolve(outputData);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }).on('error', error => {
+    console.error(error);
+    reject(error);
+  });
+});
+
+
+function calculateOutputData(http_data) {
+  const outputData = http_data.map(({ recipient_id, agreements }) => {
+    console.log('agreements ', agreements)
+    if (!agreements){
+      return {};
+    }
+    return Object.entries(agreements).map(([agreementId, agreement]) => {
+      const {
+        available,
+        closed,
+        company_address,
+        exercised,
+        exercised_tokens,
+        expiration_date,
+        future,
+        granted,
+        post_termination_exercise_window,
+        recipient,
+        share_address,
+        strike_price,
+        terminated,
+        termination_date,
+        vesting,
+      } = agreement;
+  
+      const record_balances = {
+        granted,
+        future,
+        available,
+        exercised: parseFloat(exercised_tokens) || 0,
+      };
+  
+      const vestingSchedule = vesting.map(({ nat, timestamp }) => [timestamp, parseFloat(nat)]);
+  
+      return {
+        record_balances,
+        agreement: {
+          agreement_id: agreementId,
+          share_address,
+          recipient,
+          company_address,
+          expiration_date,
+          strike_price,
+          vesting: vestingSchedule,
+          post_termination_exercise_window,
+        },
+      };
+    });
+  });
+  return outputData;
+}
+
+
+// await outputData;
+// console.log(outputData)
+
+
 Chart.register(...registerables);
 
 const EmployeeDashboard = () => {
@@ -26,8 +137,40 @@ const EmployeeDashboard = () => {
     }
   }, [account]);
   
+  let client_data = [];
+  useEffect(async () => {
+    client_data = await req();
+    client_data=client_data[0];
+    if (client_data){
+      tableData = []
+      console.log('final', client_data);
+      client_data.forEach(
+        function(agreement_data) {
+          tableData.push({
+            ContractID: agreement_data.agreement.agreement_id,
+            Company: agreement_data.agreement.company_address,
+            Share: agreement_data.agreement.share_address,
+            VestingStartDate: agreement_data.agreement.vesting[0],
+            VestingEndDate: agreement_data.agreement.vesting[agreement_data.agreement.vesting.length - 1],
+            ExpirationDate: agreement_data.agreement.expiration_date,
+            PricePerShare: agreement_data.agreement.strike_price,
+            Granted: agreement_data.record_balances.granted,
+            Vested: agreement_data.record_balances.available + agreement_data.record_balances.exercised,
+            Exercised: agreement_data.record_balances.exercised,
+          })
+      });
 
-  let client_data = [{'record_balances': {'granted': 1000,'future': 500,'available': 800,'exercised': 200},
+      let newfilteredData = tableData.filter((row) => {
+        return row.Company.toLowerCase().includes(CompanyFilter.toLowerCase()) &&
+               row.Share.toLowerCase().includes(ShareFilter.toLowerCase());
+      });
+      console.log('filtered', newfilteredData)
+      setFilteredData(newfilteredData)
+    }
+  });
+  
+
+  client_data = [{'record_balances': {'granted': 1000,'future': 500,'available': 800,'exercised': 200},
                   'agreement': {'agreement_id':'ishdhdjkhei','share_address': '0xShareAddr1','recipient': '0xRecipientAddr1','company_address': '0xCompanyAddr1',
                   'expiration_date': '2023-12-31T23:59:59','strike_price': 3.14,'vesting': [['2020-01-01T15:00:20', 100], ['2021-01-01T15:00:20', 200]],
                   'executions':[['2020-03-01T15:00:20', 40], ['2021-02-01T15:00:20', 90]],'post_termination_exercise_window': 90}},
@@ -86,11 +229,12 @@ const EmployeeDashboard = () => {
   };
 
   // Filter tableData based on name and description filters
-  const filteredData = tableData.filter((row) => {
+  let initialFilteredData = tableData.filter((row) => {
     return row.Company.toLowerCase().includes(CompanyFilter.toLowerCase()) &&
            row.Share.toLowerCase().includes(ShareFilter.toLowerCase());
   });
 
+  const [filteredData, setFilteredData] = useState(initialFilteredData);
 
   const [inputValue, setInputValue] = useState(0);
 
