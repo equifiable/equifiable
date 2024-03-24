@@ -14,24 +14,39 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Hyperlink from '../../components/HyperLink';
 import MenuBar from '../../components/MenuBar';
-
-
+import { useTezos, useAccountPkh } from '../../dappstate';
+import { useSnackContext } from '../../snackstate';
+import { SettingsProvider, useSettingsContext } from '../../settings.js';
+import WalletButton from '../../components/WalletButton';
+import { SnackProvider } from '../../snackstate.js';
+import { SettingsPanel } from '../../components/Settings.js';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Snack from '../../components/Snack';
+import { DAppProvider } from '../../dappstate';
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
 export default function LogIn() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+  const tezos = useTezos();
+  const account = useAccountPkh(); // Public key
+  const { settings } = useSettingsContext();
+  const { setInfoSnack, setErrorSnack, hideSnack } = useSnackContext();
+  const navigate = useNavigate();
+
+ 
+  useEffect(() => {
+    if (account) {
+      navigate("/employee/pricing");
+    }
+  }, [account]);
+  
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      <SettingsProvider>
       <MenuBar/>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -47,51 +62,14 @@ export default function LogIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign in 
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
-            <Grid container alignItems='center' justifyContent='center'>
-              <Grid item>
-              <Link href="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
-              </Link>
-              </Grid>
-            </Grid>
-          </Box>
+          <Grid item xs={12}>
+             <WalletButton />
+           </Grid>
         </Box>
       </Container>
+      </SettingsProvider>
     </ThemeProvider>
   );
 }

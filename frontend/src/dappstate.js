@@ -8,21 +8,21 @@ export const [
   useTezos,
   useAccountPkh,
   useReady,
-  useConnect,
+  useConnect
 ] = constate(
   useDApp,
   (v) => v.wallet,
   (v) => v.tezos,
   (v) => v.accountPkh,
   (v) => v.ready,
-  (v) => v.connect
+  (v) => v.connect,
 );
 
 function useDApp({ appName }) {
   const [{ wallet, tezos, accountPkh }, setState] = React.useState(() => ({
     wallet: null,
     tezos: null,
-    accountPkh: localStorage.getItem("account")
+    accountPkh: null
   }));
 
   const ready = Boolean(tezos);
@@ -32,7 +32,7 @@ function useDApp({ appName }) {
       setState({
         wallet: available ? new TempleWallet(appName) : null,
         tezos: null,
-        accountPkh: localStorage.getItem("account"),
+        accountPkh: null,
       });
     });
   }, [setState, appName]);

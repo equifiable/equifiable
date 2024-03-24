@@ -25,6 +25,8 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { styled, css } from '@mui/system';
 import { Modal as BaseModal } from '@mui/base/Modal';
+import Sidebar from '../../../components/SideBar.js';
+import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -95,6 +97,14 @@ export default function CreateESOP() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!account) {
+      navigate("/login_company");
+    }
+  }, [account]);
+  
+
   const generate = () =>{
     tezos.wallet.originate({
       code: code,
@@ -115,6 +125,7 @@ export default function CreateESOP() {
     <React.Fragment>
       <CssBaseline />
       <MenuBar/>
+      <Sidebar/>
       <main className={classes.layout}>
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h4" align="center">

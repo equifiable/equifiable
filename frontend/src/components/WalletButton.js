@@ -13,6 +13,7 @@ const WalletButton = (props) => {
   const { settings } = useSettingsContext();
   const handleConnect = React.useCallback(async () => {
     try {
+      console.log('Connect', connect);
       await connect(settings.network);
     } catch (err) {
       alert(err.message);

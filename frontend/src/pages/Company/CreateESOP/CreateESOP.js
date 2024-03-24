@@ -15,6 +15,10 @@ import AddressForm from '../../../components/AddressForm';
 import PaymentForm from '../../../components/PaymentForm';
 import MenuBar from '../../../components/MenuBar';
 import { useTezos, useAccountPkh } from '../../../dappstate';
+import Sidebar from '../../../components/SideBar';
+import Footer from '../../../components/Footer';
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -112,6 +116,14 @@ export default function CreateESOP() {
     return firstDays;
   }
 
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!account) {
+      navigate("/login_company");
+    }
+  }, [account]);
+  
+
   const firstDays = getFirstDaysOfYearBetweenDurations(
     window.esop_info.emission_date, 
     window.esop_info.cliff, 
@@ -130,7 +142,7 @@ export default function CreateESOP() {
         share_address : window.esop_info.stock_address, 
         recipient : window.esop_info.address,
         company_address : account,
-        expiration_date : window.esop_info.expiration_date, 
+        expiration_date : new Date(window.esop_info.expiration_date), 
         strike_price : window.esop_info.strike_price, // tez
         vesting : vesting,
         post_termination_exercise_window : 90
@@ -142,8 +154,6 @@ export default function CreateESOP() {
       .then((c) => {
         return c.methodsObject.create(data).send({
           amount: 1,
-          storageLimit: 1,
-          mutez: false
         });
       })
       .then((op) => {
@@ -163,6 +173,7 @@ export default function CreateESOP() {
     <React.Fragment>
       <CssBaseline />
       <MenuBar/>
+      <Sidebar/>
       <main className={classes.layout}>
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h4" align="center">

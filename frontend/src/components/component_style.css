@@ -16,3 +16,48 @@
   .role-button:hover {
     background-color: #0056b3; /* Darker blue on hover */
   }
+
+  .sidebar {
+    background-color: #333;
+    color: #fff;
+    width: 250px;
+    height: 100%;
+    position: fixed;
+    top: 10;
+    left: 0;
+    padding-top: 50px;
+  }
+  
+  .sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar-item {
+    margin-bottom: 10px;
+  }
+  
+  .sidebar-link {
+    display: block;
+    padding: 10px 20px;
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .sidebar-link:hover {
+    background-color: #555;
+  }
+  
+  .footer {
+    background-color: #fff;
+    text-align: center;
+    border-color: black;
+    border-radius: 5px;
+  }
+  
+  .footer-text {
+    color: #555;
+    font-size: 14px;
+  }
+

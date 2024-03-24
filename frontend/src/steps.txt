@@ -1,0 +1,32 @@
+
+completium-cli deploy src/agreement.arl --as myself --parameters '{"share_address": "KT1Gm5fVn3NwjJ8nP8F935cZcMAVZRGGZ6pH", "recipient": "tz1b6JeXpTagyy6K3J7hQNS2SbA2zwWezMBY", "company_address": "tz1hKJs5KjhC7DJJsdrG5A79rz4vdiGZgmTa", "expiration_date": "2032-01-01T12:00:00Z", "strike_price": "2", "vesting": [["2022-01-01T12:00:00Z", 5], ["2023-01-01T12:00:00Z", 6], ["2024-01-01T12:00:00Z", 7], ["2025-01-01T12:00:00Z", 8]], "post_termination_exercise_window": "90"}'
+[["2022-01-01T12:00:00Z", 5], ["2023-01-01T12:00:00Z", 6], ["2024-01-01T12:00:00Z", 7], ["2025-01-01T12:00:00Z", 8]]
+
+0. Deploy the share 
+completium-cli deploy src/share.arl --as myself --parameters '{"initial_holder": "tz1hKJs5KjhC7DJJsdrG5A79rz4vdiGZgmTa", "total_supply": "10000", "metadata_coin": ""}'
+
+Share Address: KT1Gm5fVn3NwjJ8nP8F935cZcMAVZRGGZ6pH
+
+1. Deploy the factory
+completium-cli deploy src/factory.arl --as myself --parameters '{"owner": "tz1hKJs5KjhC7DJJsdrG5A79rz4vdiGZgmTa", "price": "1tz"}'
+
+Factory: KT1ScikyYNRqLneQrPVgT7zF4FFfeen7pRhE
+
+2. Give allowance to factory on the share
+octez-client transfer 0 from myself to KT1Gm5fVn3NwjJ8nP8F935cZcMAVZRGGZ6pH --entrypoint "approve" --arg "Pair \"KT1ScikyYNRqLneQrPVgT7zF4FFfeen7pRhE\" 6000" --burn-cap 0.1
+
+3. Create agreement
+octez-client transfer 1 from myself to KT1ScikyYNRqLneQrPVgT7zF4FFfeen7pRhE --entrypoint "create" --arg "Pair \"KT1Gm5fVn3NwjJ8nP8F935cZcMAVZRGGZ6pH\" (Pair \"tz1b6JeXpTagyy6K3J7hQNS2SbA2zwWezMBY\" (Pair \"tz1hKJs5KjhC7DJJsdrG5A79rz4vdiGZgmTa\" (Pair 2019720900 (Pair 2 (Pair { Pair 1704101700 5 ; Pair 1706780100 6 ; Pair 1709285700 7 ; Pair 1711960500 10 } 90)))))" --burn-cap 0.9
+
+
+Agreement: KT18qjw1R7g6MNRqPGCvFD8U9tnjk8BQAuek
+
+4. See vested
+
+octez-client run view "getBalances" on contract "KT1Aqi8aoTtNmhVt1HwRV7sWxWZha942pkJs"
+
+5. Exercise
+
+octez-client transfer 0.000038 from myself to KT1Aqi8aoTtNmhVt1HwRV7sWxWZha942pkJs --entrypoint "execute" --arg "19"
+
+
