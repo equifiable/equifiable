@@ -11,6 +11,10 @@ init:
 	octez-client remember contract contact2 $(CONTACT2_KEY)
 	completium-cli import privatekey $(PRIVATE_KEY) as myself
 
+build-js:
+	mkdir -p build
+	completium-cli generate javascript src/share.arl > build/share.json
+
 test:
 	npm run gen-binding
 	completium-cli set endpoint mockup
