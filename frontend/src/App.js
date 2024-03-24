@@ -36,8 +36,7 @@ import SignUpCompany from './pages/LoginCompany/SignUpCompany.js';
 import { useReady, useWallet, useConnect } from './dappstate';
 import { useEffect } from 'react';
 import PricingBox from './pages/Pricing/PricingPage.js';
-import PricingPage from './pages/Pricing/PricingPage.js';
-
+import LPage from './pages/LandingPage/LandingPage.js';
 /* FIXME: Step 3.1 */
 
 /* FIXME: step 4.1 */
@@ -115,7 +114,7 @@ function App() {
     <DAppProvider appName='equifiable'>
       <Router>
         <Routes>
-          <Route path="/" element={<DecisionPage />} />
+          <Route path="/" element={<LPage />} />
           <Route path="/decision" element={<DecisionPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<LogIn />} />
@@ -126,6 +125,7 @@ function App() {
           <Route path="/company/dashboard" element={<CompanyDashboard />} />
           <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
           <Route path="/company/pricing" element={<PricingBox />} />
+          <Route path="/landingPage" element={<LPage />} />
           
         </Routes>
       </Router>
