@@ -49,7 +49,8 @@ Fill out the forms with the following details:
 
 After reviewing all the information on the final page and ensuring its accuracy, you may proceed. The shares will then be allocated according to the agreement you've made with your employee. Additionally, you'll have access to your dashboard, where you'll find crucial information for managing your stocks, employees, and other features.
 
-![image](https://github.com/equifiable/equifiable/assets/160471697/b129de15-ce4e-4a53-983c-35d9e8ec514a)
+![image](https://github.com/equifiable/equifiable/assets/60625769/2e64cbb3-4c87-4227-9d3b-3debc674457a)
+
 
 Should you wish to create another stock, simply navigate to the "Create a Stock" section, and remember to note the address!
 
