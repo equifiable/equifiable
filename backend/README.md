@@ -21,5 +21,5 @@ docker_compose up
 
 ```sh
 source .env
-python updater/update_firebase.py
+cd app/ && python -m updater.update_firebase
 ```

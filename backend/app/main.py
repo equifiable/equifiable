@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from dotenv import load_dotenv
 from database.database import connect_to_database
-from routers import users, recipients, shares, companies, auth
+from routers import users, recipients, shares, companies, auth, updater
 from fastapi.middleware.cors import CORSMiddleware
 
 origins = [
@@ -37,6 +37,9 @@ app.include_router(shares.router,tags=['Shares'])
 app.include_router(recipients.router,tags=['Recipients'])
 # The routes related to login of users, admins and ais
 # app.include_router(auth.router,tags=['Login'])
+
+# Include updater
+app.include_router(updater.router,tags=['Update'])
 
 #DEBUG
 

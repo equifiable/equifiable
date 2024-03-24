@@ -12,9 +12,14 @@ from firebase_admin import firestore
 from fastapi import status, HTTPException
 from dotenv import load_dotenv
 
-from tktz_api import *
-from management import DatabaseManagement
-from database import *
+try:
+    from updater.tktz_api import *
+    from updater.updater_management import DatabaseManagement
+    from updater.updater_database import *
+except:
+    from app.updater.tktz_api import *
+    from app.updater.updater_management import DatabaseManagement
+    from app.updater.updater_database import *
 
 def transformExecutionList(agreement_details: dict):
 
@@ -68,41 +73,49 @@ def calculateBalance(agreement_details: dict):
 
     return balance
 
-load_dotenv()
-connect_to_database()
+def update_database(db: Reference = None):
 
-client = get_database()
-factory_addr = os.getenv('CONTRACT_FACTORY_ADDRESS')
-        
-factories = DatabaseManagement(table_name='Factories',
-                        class_name_id='factory_id')
+    load_dotenv()
 
-agreements = DatabaseManagement(table_name='Agreements',
-                        class_name_id='agreement_id')
+    if db is None:
+        connect_to_database()
+        client = get_database()
+    else:
+        client = db
+    
+    factory_addr = os.getenv('CONTRACT_FACTORY_ADDRESS')
+            
+    # factories = DatabaseManagement(table_name='Factories',
+    #                         class_name_id='factory_id')
 
-shares = DatabaseManagement(table_name='Shares',
-                        class_name_id='shares_id')
+    # agreements = DatabaseManagement(table_name='Agreements',
+    #                         class_name_id='agreement_id')
 
-agreements = get_agreements(factory_addr)
+    # shares = DatabaseManagement(table_name='Shares',
+    #                         class_name_id='shares_id')
 
-# client.child('Factories').child(factory_addr).set({'agreements': agreement})
+    agreements = get_agreements(factory_addr)
 
-for single_agreement in agreements:
-    agreement_details = get_agreement_details(single_agreement)
-    recipient = agreement_details['recipient']
-    company = agreement_details['company_address']
-    share = agreement_details['share_address']
+    # client.child('Factories').child(factory_addr).set({'agreements': agreement})
 
-    _ptr = get_ledger_ptr(share)
+    for single_agreement in agreements:
+        agreement_details = get_agreement_details(single_agreement)
+        recipient = agreement_details['recipient']
+        company = agreement_details['company_address']
+        share = agreement_details['share_address']
 
-    ledger_values = get_ledger_values(_ptr)
-    ledger_dict = {'ledger': ledger_values}
+        _ptr = get_ledger_ptr(share)
 
-    balance = calculateBalance(agreement_details)
-    transformExecutionList(agreement_details)
+        ledger_values = get_ledger_values(_ptr)
+        ledger_dict = {'ledger': ledger_values}
 
-    client.child('Recipients').child(recipient).child('agreements').child(single_agreement).set(agreement_details | balance)
-    client.child('Companies').child(company).child('agreements').child(single_agreement).set(agreement_details | balance)
+        balance = calculateBalance(agreement_details)
+        transformExecutionList(agreement_details)
 
-    client.child('Shares').child(share).set(ledger_dict)
+        client.child('Recipients').child(recipient).child('agreements').child(single_agreement).set({**agreement_details, **balance})
+        client.child('Companies').child(company).child('agreements').child(single_agreement).set({**agreement_details, **balance})
 
+        client.child('Shares').child(share).set(ledger_dict)
+
+if __name__ == '__main__':
+    update_database()
