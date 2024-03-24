@@ -32,7 +32,7 @@ RUN apt-get clean && \
 COPY package*.json ./
 
 
-FROM node:18.19.1
+#FROM node:18.19.1
 
 # Install app dependencies
 RUN npm install

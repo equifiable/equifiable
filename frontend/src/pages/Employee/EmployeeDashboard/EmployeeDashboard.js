@@ -328,7 +328,7 @@ const MixedChart = () => {
                     height = chart.height;
               ctx.restore();
               let fontSize = (height / 114).toFixed(2);
-              ctx.font = `${fontSize}em sans-serif`;
+              ctx.font = `bold ${fontSize}em sans-serif`;
               ctx.textBaseline = "middle";
               const text = Math.floor(vestingPercentage+0.5)+"%",
                     textX = Math.round((width - ctx.measureText(text).width) / 2),
@@ -350,7 +350,7 @@ const MixedChart = () => {
     }, [timestamps]); // Depend on any external dynamic data if necessary
   
     return (
-      <div style={{ maxWidth: '50%', height: '400px', margin: 'auto' }}>
+      <div style={{ maxWidth: '75%', height: '400px', margin: 'auto' }}>
         <canvas id="doughnutChartVesting" ref={chartRefa}></canvas>
       </div>
     );
@@ -432,7 +432,7 @@ const DoughnutChartComponent = () => {
                   height = chart.height;
             ctx.restore();
             var fontSize = (height / 114).toFixed(2);
-            ctx.font = `${fontSize}em sans-serif`;
+            ctx.font = `bold ${fontSize}em sans-serif`;
             ctx.textBaseline = "middle";
             var text = Math.floor(executingPercentage+0.5)+"%",
                   textX = Math.round((width - ctx.measureText(text).width) / 2),
@@ -455,7 +455,7 @@ const DoughnutChartComponent = () => {
   }, [timestamps]); // Depend on variables that might change your chart data
 
   return (
-    <div style={{ maxWidth: '50%', height: '400px', margin: 'auto' }}>
+    <div style={{ maxWidth: '75%', height: '400px', margin: 'auto' }}>
       <canvas id="doughnutChartExecuting" ref={chartRefaa}></canvas>
     </div>
   );
@@ -502,27 +502,55 @@ const Graphs = () => {
 
   return (
 <>
-  <MenuBar />
+  
   <head>
-  <title>ESOP Dashboard Explanation</title>
   </head> 
   <body>
 
-  <div class="explanation">
-    <h1>Welcome to Your ESOP Dashboard!</h1>
-
-
-
-    <h2>Take Control of Your Ownership Journey:</h2>
-  </div>
-
 </body>
-{Graphs()}
   <div className="dashboardContainer">
     <table className="dashboardTable">
       <thead>
+      <tr>
+        <th colSpan="7">
+            <div className="empty" style={{ height: '600px' }}>
+            </div>
+        </th>
+    </tr>
+
+          <tr>
+            <th colSpan="7">
+              <div className="center-title" style={{textAlign: 'center'}}>
+                <h1>Welcome to your Personal ESOP Dashboard!</h1>
+                <h2>©2024 Equifiable</h2>
+              </div>
+            </th>
+          </tr>
+
+          <tr>
+            <th colSpan="7">
+              <div className="title-charts" style={{textAlign: 'center'}}>
+                <h3>State of Last Agreement</h3>
+              </div>
+            </th>
+          </tr>
+
+          
+
+        
         <tr>
           <th colSpan="7"> 
+            <div className="graphs_all">
+              {Graphs()}
+            </div>
+          </th>
+        </tr>
+        
+        <tr>
+          <th colSpan="7">
+          <div className="center-title">
+            <h1>Your others ESOPs:</h1>
+            </div> 
             <div className="filters">
               <input 
                 type="text" 
@@ -602,7 +630,6 @@ const Graphs = () => {
       </tbody>
     </table>
   </div>
-  <p>This is an example text placed below the table.</p>
 </>
   );
 };
