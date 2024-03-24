@@ -490,16 +490,50 @@ const Graphs = () => {
           {OwnershipSharesChart()}
         </div>
       </div>
-      <div style={fullWidthStyle}>
-        <DatasetSizeBox data={data}/>
-        <AvailableSharesBox data={data}/>
+      <div style={rowStyle}>
+        <DatasetSizeBox data={data} style={halfWidthStyle}/>
+        <AvailableSharesBox data={data} style={halfWidthStyle}/>
       </div>
     </div>
   );
 };
+
+// Adjusted Component to display dataset size
+function DatasetSizeBox({ data }) {
+  // Calculate the size of the dataset based on the number of labels
+  const datasetSize = data.labels.length;
+
+  return (
+    <div id="datasetSizeBox" style={{ width: '210px', height: 'auto', backgroundColor: '#66A98E', color: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', fontSize: '20px', fontFamily: 'Arial', fontWeight: 'bold', borderRadius: '4px', marginTop: '20px' }}>
+      <div style={{ textAlign: 'center', width: '100%', fontSize: '50px', fontWeight: 'bold' }}>
+        {datasetSize}
+      </div>
+      <div style={{ textAlign: 'center', width: '100%', fontSize: '16px' }}>
+        Total Shareholders
+      </div>
+    </div>
+  );
+}
   
 
+// Adjusted Component to display available shares
+function AvailableSharesBox({ data }) {
+  // Find the index of "Available Shares" in the labels array
+  const availableSharesIndex = data.labels.indexOf('Available Shares');
+  // Retrieve the value of "Available Shares" using the found index
+  const availableSharesValue = data.datasets[0].data[availableSharesIndex];
 
+  return (
+    <div id="availableSharesBox" style={{ width: '210px', height: 'auto', backgroundColor: '#66A98E', color: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', fontSize: '20px', fontFamily: 'Arial', fontWeight: 'bold', borderRadius: '4px', marginTop: '20px' }}>
+      <div style={{ textAlign: 'center', width: '100%', fontSize: '50px', fontWeight: 'bold' }}>
+        {availableSharesValue}
+      </div>
+      <div style={{ textAlign: 'center', width: '100%', fontSize: '16px' }}>
+        Available Shares
+      </div>
+    </div>
+  );
+}
 
   
 
