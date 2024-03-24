@@ -23,6 +23,12 @@ const EmployeeDashboard = () => {
                 'future': 1000,
                 'available': 1600,
                 'exercised': 400},
+
+
+
+
+
+
               'agreement': {
                 'agreement_id':'iodudydio',
                 'share_address': '0xShareAddr2',
@@ -48,6 +54,35 @@ const EmployeeDashboard = () => {
                 'vesting': [['2020-01-01T15:00:20', 300], ['2021-01-01T15:00:20', 600]],
                 'post_termination_exercise_window': 270}}]
 
+    let totalExecutedArray = []
+    let totalVestedArray = []
+
+    
+    
+    
+    client_data.forEach(
+      function(agreement_data,index) {
+
+        let totalExecuted = 0
+        let totalVested = 0
+
+        totalExecutedArray.push([])
+        totalVestedArray.push([])
+
+        for(var i=0;i<client_data[index].agreement.vesting.length;++i){
+          totalVested+=client_data[index].agreement.vesting[i][1]
+          totalVestedArray[totalVestedArray.length-1].push(totalVested)
+        }
+    
+        for(var i=0;i<client_data[index].agreement.executions.length;++i){
+          totalExecuted+=client_data[index].agreement.executions[i][1]
+          totalExecutedArray[totalExecutedArray.length-1].push(totalExecuted)
+        }
+
+        
+
+
+    });
 
   let tableData = []
   client_data.forEach(
@@ -146,15 +181,21 @@ const MixedChart = () => {
       //let optionsVestedData = client_data[0].agreement.vesting[0]
 
       let optionsVestedData = []
+      let sum = 0 
       client_data[0].agreement.vesting.forEach(
         function(data) {
-          optionsVestedData.push(data[1])
+          sum+=data[1]
+          optionsVestedData.push(sum)
       });
 
+
+
       let optionsExecutedData = []
+      sum=0
       client_data[0].agreement.executions.forEach(
         function(data) {
-          optionsExecutedData.push(data[1])
+          sum+=data[1]
+          optionsExecutedData.push(sum)
       });
 
 
@@ -595,8 +636,8 @@ const Graphs = () => {
                     <td colSpan="7" className="detailRow">
                         <div className="rowContainer">
                                 <p><strong>TOTAL GRANTED:</strong> {row.Granted}</p>
-                                <p><strong>VESTED:</strong> {row.Vested}</p>
-                                <p><strong>EXERCISED:</strong> {row.Exercised}</p>
+                                <p><strong>VESTED:</strong> {totalVestedArray[index][totalVestedArray[index].length-1]}</p>
+                                <p><strong>EXERCISED:</strong> {totalExecutedArray[index][totalExecutedArray[index].length-1]}</p>
                                 <div className="actionContainer">
                                   <table>
                                     <tr>

@@ -328,106 +328,137 @@ const highestLabel = ownershipData.labels[maxIndex];
     );
   };
 
-  // This function updates the visual representation of the dataset size
-function updateDatasetSizeVisual(data) {
-  // Calculate the size of the dataset based on the number of labels
-  const datasetSize = data.labels.length;
+  // Component to display dataset size
+function DatasetSizeBox({ data }) {
+  useEffect(() => {
+    // Calculate the size of the dataset based on the number of labels
+    const datasetSize = data.labels.length;
 
-  // Ensure the visual container for the dataset size is present
-  var sizeBox = document.getElementById('datasetSizeBox');
-  if (!sizeBox) {
-      sizeBox = document.createElement('div');
-      sizeBox.id = 'datasetSizeBox';
-      document.body.appendChild(sizeBox); // Assuming you want to append to the body
-  }
+    // Update the visual representation of the dataset size
+    const updateDatasetSizeVisual = () => {
+      // Ensure the visual container for the dataset size is present
+      let sizeBox = document.getElementById('datasetSizeBox');
+      if (!sizeBox) {
+        sizeBox = document.createElement('div');
+        sizeBox.id = 'datasetSizeBox';
+        document.body.appendChild(sizeBox);
+      }
 
-    // Create a new div for the availableSharesValue
-  var sizeBoxDiv = document.createElement('div');
-  sizeBoxDiv.innerText = `${datasetSize}`;
-  // Style for the availableSharesValue to be larger
-  sizeBoxDiv.style.textAlign = 'center';
-  sizeBoxDiv.style.width = '100%';
-  sizeBoxDiv.style.fontSize = '50px'; // Larger font size
-  sizeBoxDiv.style.fontWeight = 'bold';
+      // Create a new div for the dataset size value
+      let sizeBoxDiv = document.createElement('div');
+      sizeBoxDiv.innerText = `${datasetSize}`;
+      // Style for the dataset size value to be larger
+      sizeBoxDiv.style.textAlign = 'center';
+      sizeBoxDiv.style.width = '100%';
+      sizeBoxDiv.style.fontSize = '50px'; // Larger font size
+      sizeBoxDiv.style.fontWeight = 'bold';
 
-  // Create another div for the label "Available Shares"
-  var sizeBoxDivLabel = document.createElement('div');
-  sizeBoxDivLabel.innerText = 'Total Shareholders';
-  // Style for the label to be smaller
-  sizeBoxDivLabel.style.textAlign = 'center';
-  sizeBoxDivLabel.style.width = '100%';
-  sizeBoxDivLabel.style.fontSize = '16px'; // Smaller font size
+      // Create another div for the label "Total Shareholders"
+      let sizeBoxDivLabel = document.createElement('div');
+      sizeBoxDivLabel.innerText = 'Total Shareholders';
+      // Style for the label to be smaller
+      sizeBoxDivLabel.style.textAlign = 'center';
+      sizeBoxDivLabel.style.width = '100%';
+      sizeBoxDivLabel.style.fontSize = '16px'; // Smaller font size
 
-  // Append both divs to sharesBox
-  sizeBox.appendChild(sizeBoxDiv);
-  sizeBox.appendChild(sizeBoxDivLabel);
+      // Append both divs to sizeBox
+      sizeBox.appendChild(sizeBoxDiv);
+      sizeBox.appendChild(sizeBoxDivLabel);
 
-  // Style for the dataset size box, to make it visually distinct
-  sizeBox.style.width = '150px';
-  sizeBox.style.height = '40px'; // Adjusted for a smaller size
-  sizeBox.style.backgroundColor = '#66A98E';
-  sizeBox.style.color = 'white';
-  sizeBox.style.display = 'flex';
-  sizeBox.style.justifyContent = 'center';
-  sizeBox.style.alignItems = 'center';
-  sizeBox.style.fontSize = '20px';
-  sizeBox.style.fontFamily = "Arial"; // Default font family for Chart.js
-  sizeBox.style.fontWeight = "bold";
-  sizeBox.style.borderRadius = '4px';
-  //sizeBox.style.marginTop = '20px';
+      // Style for the dataset size box, to make it visually distinct
+      sizeBox.style.width = '210px';
+      sizeBox.style.height = '50px'; // Adjusted for a smaller size
+      sizeBox.style.backgroundColor = '#66A98E';
+      sizeBox.style.color = 'white';
+      sizeBox.style.display = 'flex';
+      sizeBox.style.justifyContent = 'center';
+      sizeBox.style.alignItems = 'center';
+      sizeBox.style.fontSize = '20px';
+      sizeBox.style.fontFamily = 'Arial'; // Default font family for Chart.js
+      sizeBox.style.fontWeight = 'bold';
+      sizeBox.style.borderRadius = '4px';
+      sizeBox.style.marginTop = '20px';
+    };
 
-  // Update the content of the visual container with the number of elements
-  //sizeBox.innerText = `${datasetSize} Total Shareholders`;
+    updateDatasetSizeVisual();
+
+    // Clean up function
+    return () => {
+      const sizeBox = document.getElementById('datasetSizeBox');
+      if (sizeBox) {
+        sizeBox.remove(); // Remove the sizeBox element when the component unmounts
+      }
+    };
+  }, [data]);
+
+  return null; // The component doesn't render any visible content
 }
 
+// Component to display available shares
+function AvailableSharesBox({ data }) {
+  useEffect(() => {
+    // Update the visual representation of available shares
+    const updateAvailableSharesVisual = () => {
+      // Find the index of "Available Shares" in the labels array
+      const availableSharesIndex = data.labels.indexOf('Available Shares');
+      // Retrieve the value of "Available Shares" using the found index
+      const availableSharesValue = data.datasets[0].data[availableSharesIndex];
 
-function updateAvailableSharesVisual(data) {
-  // Find the index of "Available Shares" in the labels array
-  const availableSharesIndex = data.labels.indexOf("Available Shares");
-  // Retrieve the value of "Available Shares" using the found index
-  const availableSharesValue = data.datasets[0].data[availableSharesIndex];
+      let sharesBox = document.getElementById('availableSharesBox');
+      if (!sharesBox) {
+        sharesBox = document.createElement('div');
+        sharesBox.id = 'availableSharesBox';
+        document.body.appendChild(sharesBox);
+      }
 
-  let sharesBox = document.getElementById('availableSharesBox');
-  if (!sharesBox) {
-      sharesBox = document.createElement('div');
-      sharesBox.id = 'availableSharesBox';
-      document.body.appendChild(sharesBox); // Assuming you want to append to the body
-  }
+      // Create a new div for the availableSharesValue
+      let sharesValueDiv = document.createElement('div');
+      sharesValueDiv.innerText = `${availableSharesValue}`;
+      // Style for the availableSharesValue to be larger
+      sharesValueDiv.style.textAlign = 'center';
+      sharesValueDiv.style.width = '100%';
+      sharesValueDiv.style.fontSize = '50px'; // Larger font size
+      sharesValueDiv.style.fontWeight = 'bold';
 
-// Create a new div for the availableSharesValue
-let sharesValueDiv = document.createElement('div');
-sharesValueDiv.innerText = `${availableSharesValue}`;
-// Style for the availableSharesValue to be larger
-sharesValueDiv.style.textAlign = 'center';
-sharesValueDiv.style.width = '100%';
-sharesValueDiv.style.fontSize = '50px'; // Larger font size
-sharesValueDiv.style.fontWeight = 'bold';
+      // Create another div for the label "Available Shares"
+      let sharesLabelDiv = document.createElement('div');
+      sharesLabelDiv.innerText = 'Available Shares';
+      // Style for the label to be smaller
+      sharesLabelDiv.style.textAlign = 'center';
+      sharesLabelDiv.style.width = '100%';
+      sharesLabelDiv.style.fontSize = '16px'; // Smaller font size
 
-// Create another div for the label "Available Shares"
-let sharesLabelDiv = document.createElement('div');
-sharesLabelDiv.innerText = 'Available Shares';
-// Style for the label to be smaller
-sharesLabelDiv.style.textAlign = 'center';
-sharesLabelDiv.style.width = '100%';
-sharesLabelDiv.style.fontSize = '16px'; // Smaller font size
+      // Append both divs to sharesBox
+      sharesBox.appendChild(sharesValueDiv);
+      sharesBox.appendChild(sharesLabelDiv);
 
-// Append both divs to sharesBox
-sharesBox.appendChild(sharesValueDiv);
-sharesBox.appendChild(sharesLabelDiv);
+      // Style for the dataset size box, to make it visually distinct
+      sharesBox.style.width = '210px';
+      sharesBox.style.height = '50px'; // Adjusted for a smaller size
+      sharesBox.style.backgroundColor = '#66A98E';
+      sharesBox.style.color = 'white';
+      sharesBox.style.display = 'flex';
+      sharesBox.style.justifyContent = 'center';
+      sharesBox.style.alignItems = 'center';
+      sharesBox.style.fontSize = '20px';
+      sharesBox.style.fontFamily = 'Arial'; // Default font family for Chart.js
+      sharesBox.style.fontWeight = 'bold';
+      sharesBox.style.borderRadius = '4px';
+      sharesBox.style.marginTop = '20px';
+    };
 
-  // Style for the dataset size box, to make it visually distinct
-  sharesBox.style.width = '150px';
-  sharesBox.style.height = '40px'; // Adjusted for a smaller size
-  sharesBox.style.backgroundColor = '#66A98E';
-  sharesBox.style.color = 'white';
-  sharesBox.style.display = 'flex';
-  sharesBox.style.justifyContent = 'center';
-  sharesBox.style.alignItems = 'center';
-  sharesBox.style.fontSize = '20px';
-  sharesBox.style.fontFamily = "Arial"; // Default font family for Chart.js
-  sharesBox.style.fontWeight = "bold";
-  sharesBox.style.borderRadius = '4px';
-  //sharesBox.style.marginTop = '20px';
+    updateAvailableSharesVisual();
+
+    // Clean up function
+    return () => {
+      const sharesBox = document.getElementById('availableSharesBox');
+      if (sharesBox) {
+        sharesBox.remove(); // Remove the sharesBox element when the component unmounts
+      }
+    };
+  }, [data]);
+
+  return null; // The component doesn't render any visible content
 }
 
 
@@ -459,8 +490,9 @@ const Graphs = () => {
           {OwnershipSharesChart()}
         </div>
       </div>
-      <div>
- 
+      <div style={fullWidthStyle}>
+        <DatasetSizeBox data={data}/>
+        <AvailableSharesBox data={data}/>
       </div>
     </div>
   );
