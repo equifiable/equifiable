@@ -7,7 +7,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { useTezos, useAccountPkh } from '../../../dappstate';
 
-
 const http = require('http');
 const options = {
   hostname: '172.16.120.78',

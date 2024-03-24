@@ -58,7 +58,7 @@ function PricingPage() {
             <Paper className={classes.paper}>
                 <div className="card-body">
                   <h5 className="card-title">Monthly Subscription</h5>
-                  <p className="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla fringilla justo eget aliquet.</p>
+                  <p className="card-text">199 TZ/Month + 10 TZ per agreement</p>
                   <ul className="list-group list-group-flush">
                     <li className="list-group-item">Access to all features</li>
                     <li className="list-group-item">24/7 customer support</li>
@@ -69,22 +69,6 @@ function PricingPage() {
                 </Paper>
               </div>
             
-            <div className="col-md-6">
-                <Paper className={classes.paper}>
-                <div className="card-body">
-                  <Grid container alignItems='center' justifyConcent='center'>
-                  <h5 className="card-title">Yearly Subscription</h5>
-                  <p className="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla fringilla justo eget aliquet.</p>
-                  </Grid>
-                  <ul className="list-group list-group-flush">
-                    <li className="list-group-item">Access to all features</li>
-                    <li className="list-group-item">24/7 customer support</li>
-                    <li className="list-group-item">Save 20% with yearly billing</li>
-                  </ul>
-                  <button className="btn btn-primary mt-3">Choose Yearly Plan</button>
-                </div>
-              </Paper>
-            </div>
         </main>
       </Grid>
     </React.Fragment>
