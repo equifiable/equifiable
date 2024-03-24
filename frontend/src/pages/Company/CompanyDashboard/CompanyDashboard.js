@@ -3,8 +3,10 @@ import { Chart, registerables } from 'chart.js';
 import './CompanyDashboard.css';
 import MenuBar from '../../../components/MenuBar';
 import React, { useState, useEffect, useRef } from 'react';
+import Sidebar from '../../../components/SideBar';
 
 Chart.register(...registerables);
+
 
 const CompanyDashboard = () => {
   const [selectedRowIndex, setSelectedRowIndex] = useState(null);
@@ -540,6 +542,7 @@ function AvailableSharesBox({ data }) {
   return (
     <>
       <MenuBar />
+      <Sidebar/>
 
       <div className="dashboardContainer">
         <table className="dashboardTable">

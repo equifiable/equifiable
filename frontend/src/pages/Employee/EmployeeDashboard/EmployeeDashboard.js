@@ -4,8 +4,6 @@ import './EmployeeDashboard.css';
 import MenuBar from '../../../components/MenuBar';
 import React, { useState, useEffect, useRef } from 'react';
 
-
-
 Chart.register(...registerables);
 
 const EmployeeDashboard = () => {
@@ -549,6 +547,7 @@ const Graphs = () => {
   <body>
 
 </body>
+  <MenuBar></MenuBar>
   <div className="dashboardContainer">
     <table className="dashboardTable">
       <thead>
