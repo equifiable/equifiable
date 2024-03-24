@@ -266,7 +266,7 @@ const EmployeeDashboard = () => {
       .then((c) => {
         return c.methodsObject
           .execute(amountStocks)
-          .send({amount: amountStocks*strikePrice});
+          .send({amount: amountStocks*strikePrice, mutez:true});
       })
       .then((op) => {
         console.log(`Waiting for ${op.opHash} to be confirmed...`);
