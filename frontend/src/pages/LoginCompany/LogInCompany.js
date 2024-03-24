@@ -25,7 +25,9 @@ import Snack from '../../components/Snack';
 import { DAppProvider } from '../../dappstate';
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { useEffect } from 'react';
+import { useState } from 'react';
 
+const SUBSCRIPTION_CONTRACT = "KT1Ksw2QMVjaUjFciKruxCajHvbNR9m28gmC";
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
@@ -36,11 +38,26 @@ export default function LogInCompany() {
   const { settings } = useSettingsContext();
   const { setInfoSnack, setErrorSnack, hideSnack } = useSnackContext();
   const navigate = useNavigate();
-
  
   useEffect(() => {
     if (account) {
-      navigate("/company/createstock");
+      tezos.wallet
+        .at(SUBSCRIPTION_CONTRACT)
+        .then((c) => {
+          console.log(c.contractViews)
+          return c.contractViews.getStatus(account).executeView({ viewCaller: account });
+        })
+        .then((hasSignature) => {
+          console.log(hasSignature);
+          if (!hasSignature){
+            navigate("/company/pricing");
+          } else {
+            navigate("/company/dashboard");
+          }
+        })
+        .catch((error) => console.log(`Error: ${error}`));
+
+      
     }
   }, [account]);
   

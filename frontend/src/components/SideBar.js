@@ -8,11 +8,6 @@ function Sidebar() {
     <div className="sidebar">
       <ul className="sidebar-nav">
         <li className="sidebar-item">
-          <a onClick={()=>{navigate("/company/createESOP")}} className="sidebar-link">
-            Create ESOP
-          </a>
-        </li>
-        <li className="sidebar-item">
           <a onClick={()=>{navigate("/company/dashboard")}} className="sidebar-link">
             Dashboard
           </a>
@@ -23,10 +18,15 @@ function Sidebar() {
           </a>
         </li>
         <li className="sidebar-item">
+          <a onClick={()=>{navigate("/company/createESOP")}} className="sidebar-link">
+            Create ESOP
+          </a>
+        </li>
+        {/* <li className="sidebar-item">
           <a onClick={()=>{navigate("/company/pricing")}} className="sidebar-link">
             Subscription
           </a>
-        </li>
+        </li> */}
       </ul>
     </div>
   );

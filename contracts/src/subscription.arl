@@ -6,7 +6,7 @@ variable YEAR_PRICE : tez = 15tz
 variable year : duration = 365d
 variable month: duration = 30d
 
-asset User {
+asset User identified by user {
   user          : address;
   subType       : int;
   termStart     : date;
@@ -51,19 +51,24 @@ entry subscribe(tokenID: int ) {
     }
 }
 
-function  checkStatus() : bool {    
-    
-    if (now > User[caller].nextPayment+10d) then begin
-        return false
-    end else
-        return true   
-        
-    
+function  checkStatus(id : address) : bool {    
+    var hasUser : bool = User.contains(id);
+    var isSubscribed : bool = false;
+    if (hasUser = true) then begin
+        isSubscribed := (now <= User[id].nextPayment+10d);
+    end;
+    return isSubscribed
 }
+
+view getStatus(id : address) : bool {
+    var response : bool = checkStatus(id);
+    return response
+}
+
 entry payBill() {
 
         require{r2 : User.contains(caller) otherwise "User not found!";
-                r3 : checkStatus() otherwise "Payment is late -  you lost your account"}
+                r3 : checkStatus(caller) otherwise "Payment is late -  you lost your account"}
         
         effect{
 
