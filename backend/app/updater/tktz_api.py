@@ -1,9 +1,10 @@
 import os
 import json
 import requests
+from typing import List
 
 
-def get_agreements(contract_factory: str) -> list[str]:
+def get_agreements(contract_factory: str) -> List[str]:
     # TODO: verify if the address is valid
 
     """
