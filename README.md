@@ -1,6 +1,6 @@
 # EquiFiable
 
-[https://equifiable.com/](https://equifiable.com/).
+[https://equifiable.com/](https://equifiable.com/)
 
 <p align="center">
   <img src="https://github.com/equifiable/equifiable/blob/main/frontend/src/assets/logo_no_text.png"  width="300px"/>
