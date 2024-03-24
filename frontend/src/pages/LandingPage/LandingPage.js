@@ -65,12 +65,12 @@ export default function LPage() {
     </Grid>
     <div style={{ backgroundColor: 'black', color: 'white', padding: '10px', textAlign: 'center', height:'600px' }}>
       <h1>How does it work?</h1>
-      <p style={{width:'100%', fontSize:'25px', fontFamily:'monospace'}}> EquiFiable provides a Tezos blockchain-based platform for easy management of tokenized ESOPs, improving employee retention and simplifying equity distribution.​</p>
+      <p style={{width:'100%', padding:'10px', fontSize:'25px', fontFamily:'monospace'}}> EquiFiable provides a Tezos blockchain-based platform for easy management of tokenized ESOPs, improving employee retention and simplifying equity distribution.​</p>
       <img className="top-image" src={require('../../assets/tezos.png').default} alt="Tezos" style={{align:'left'}} />
     </div>
     <div style={{ backgroundColor: '#156082', color: 'white', padding: '10px', textAlign: 'center', height:'600px' }}>
       <h1>The EquiFiable Team: Our Greatest Asset</h1>
-      <p style={{width:'100%', fontSize:'25px', fontFamily:'monospace'}}>A team with multidisciplinary skills, ranging from business to full-stack development and blockchain.​</p>
+      <p style={{width:'100%', fontSize:'25px', fontFamily:'monospace'}}>A team with multidisciplinary skills, ranging from Business to Full Stack development and Blockchain.​</p>
       <img className="top-image-group" src={require('../../assets/group.png').default} alt="Tezos" style={{align:'left'}} />
     </div>
     </ThemeProvider>
