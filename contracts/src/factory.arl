@@ -1,6 +1,10 @@
 archetype factory(owner : address, price : tez)
 
-import "agreement.arl"
+import "stk_agreement.arl" // Stock option agreement
+import "rsu_agreement.arl" // RSU agreement
+
+// Enum to distinguish between agreement types
+enum AgreementType = StockOption | RSU
 
 entry setPrice(newPrice : tez) {
     called by owner
@@ -10,11 +14,12 @@ entry setPrice(newPrice : tez) {
 }
 
 entry create(
+    agreement_type : AgreementType,     // Add an agreement type
     share_address : address, 
     recipient : address, 
     company_address : address, 
     expiration_date : date, 
-    strike_price : tez,
+    strike_price : tez,                 // Only used for stock options
     vesting : list<date * nat>,
     post_termination_exercise_window : nat) {
     called by company_address
@@ -22,16 +27,28 @@ entry create(
         r1 : transferred = price otherwise "InsufficientTransfer"
     }
     effect {
-        // Create agreement
-        const agreement_op_address : (operation * address) = create_contract(agreement, none, 0tz, {
-            share_address = share_address;
-            recipient = recipient;
-            company_address = company_address;
-            expiration_date = expiration_date;
-            strike_price = strike_price;
-            vesting = vesting;
-            post_termination_exercise_window = post_termination_exercise_window
-        });
+        const agreement_op_address : (operation * address) =
+            match agreement_type with
+            | StockOption -> create_contract(stk_agreement, none, 0tz, {
+                share_address = share_address;
+                recipient = recipient;
+                company_address = company_address;
+                expiration_date = expiration_date;
+                strike_price = strike_price;  // Stock option needs a strike price
+                vesting = vesting;
+                post_termination_exercise_window = post_termination_exercise_window
+            })
+            | RSU -> create_contract(rsu_agreement, none, 0tz, {
+                share_address = share_address;
+                recipient = recipient;
+                company_address = company_address;
+                expiration_date = expiration_date;
+                // No strike price needed for RSU
+                vesting = vesting
+                // No post-termination exercise window needed for RSU
+            })
+            end;
+        
         operations := [agreement_op_address[0]];
 
         // Lock the total number of share tokens to the agreement
