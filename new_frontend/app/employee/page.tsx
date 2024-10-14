@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import EmployeeDashboard from "./EmployeeDashboard";
+// import EmployeeDashboard from "./EmployeeDashboard";
 
 export default function DashboardView() {
   const [loginType, setLoginType] = useState("client");
@@ -17,7 +17,7 @@ export default function DashboardView() {
               Dashboard
             </h1>
           </div>
-          <EmployeeDashboard/>
+          {/* <EmployeeDashboard/> */}
         </div>
       </div>
     </section>
