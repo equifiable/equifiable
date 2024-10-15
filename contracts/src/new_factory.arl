@@ -1,0 +1,71 @@
+archetype factory(owner : address, price : tez)
+
+import "stkagreement.arl"
+import "rsuagreement.arl"
+
+entry setPrice(newPrice : tez) {
+    called by owner
+    effect {
+        price := newPrice;
+    }
+}
+
+entry create(
+    agreement_type : string, // Parameter to specify the agreement type
+    share_address : address, 
+    recipient : address, 
+    company_address : address, 
+    expiration_date : date, 
+    strike_price : tez, // Only used for stk_agreement
+    vesting : list<date * nat>, 
+    post_termination_exercise_window : nat // Only used for stk_agreement
+) {
+    called by company_address
+    require {
+        r1 : transferred = price otherwise "InsufficientTransfer";
+    }
+    effect {
+        if (agreement_type == "stk") {
+            // Create stk_agreement
+            const agreement_op_address : (operation * address) = create_contract(stk_agreement, none, 0tz, {
+                share_address = share_address;
+                recipient = recipient;
+                company_address = company_address;
+                expiration_date = expiration_date;
+                strike_price = strike_price;
+                vesting = vesting;
+                post_termination_exercise_window = post_termination_exercise_window;
+            });
+            operations := [agreement_op_address[0]];
+
+            var granted_tokens : nat = 0;
+            for pair in vesting do
+                granted_tokens += pair[1];
+            done;
+            transfer 0tz to share_address call %transfer<address * address * nat>((company_address, agreement_op_address[1], granted_tokens));
+        
+        } else if (agreement_type == "rsu") {
+            // Create rsu_agreement
+            const agreement_op_address : (operation * address) = create_contract(rsu_agreement, none, 0tz, {
+                share_address = share_address;
+                recipient = recipient;
+                company_address = company_address;
+                expiration_date = expiration_date;
+                vesting = vesting;
+            });
+            operations := [agreement_op_address[0]];
+
+            var granted_tokens : nat = 0;
+            for pair in vesting do
+                granted_tokens += pair[1];
+            done;
+            transfer 0tz to share_address call %transfer<address * address * nat>((company_address, agreement_op_address[1], granted_tokens));
+        } else {
+            // Handle invalid agreement type
+            fail("InvalidAgreementType");
+        }
+
+        // Transfer the required fee
+        transfer transferred to owner;
+    }
+}

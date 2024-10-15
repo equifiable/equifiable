@@ -1,0 +1,85 @@
+archetype agreement(
+    share_address : address, 
+    recipient : address, 
+    company_address : address, 
+    expiration_date : date,
+    vesting : list<date * nat>
+)
+
+record balances {granted : nat; future : nat; vested : nat}
+
+asset executions identified by executed_at {executed_at : date; executed_amount : nat}
+
+variable exercised_tokens : nat = 0
+variable termination_date : option<date> = none
+
+variable terminated : bool = false
+variable closed : bool = false
+
+function isExpired() : bool {
+    var beforeExpirationDate : bool = now <= expiration_date;
+    var stillValid : bool = beforeExpirationDate;
+    return (not stillValid)
+}
+
+function calculateBalance() :  balances {
+    var vested_tokens : nat = 0;
+    var granted_tokens : nat = 0;
+
+    for pair in vesting do
+        var beforeTermination : bool = match termination_date with
+        | some(tDate) -> pair[0] <= tDate
+        | none        -> true
+        end;
+        var vested : bool = pair[0] < now and beforeTermination;
+        vested_tokens += (vested) ? pair[1] : 0;
+        granted_tokens += pair[1];
+    done;
+
+    var future_tokens : nat ?= int_to_nat(granted_tokens - vested_tokens); 
+
+    return {
+        granted = granted_tokens;
+        future = future_tokens;
+        vested = vested_tokens
+        
+    }
+}
+
+entry execute() {
+    called by recipient
+    require {
+        r1 : not isExpired() otherwise "Expired";
+    }
+    effect {
+        var b : balances = calculateBalance();
+
+        transfer 0tz to share_address call %transfer<address * address * nat>((self_address, recipient, b.vested));
+
+        exercised_tokens +=  b.vested;
+        executions.add({
+            executed_at = now;
+            executed_amount =  b.vested
+        })
+    }
+}
+
+entry terminate() {
+    called by company_address
+    require {
+        isTerminated : terminated = false otherwise "AlreadyTerminated"
+    }
+    effect {
+        terminated := true;
+        var b : balances = calculateBalance();
+        // unlock future company shares
+        transfer 0tz to share_address call %transfer<address * address * nat>((self_address, company_address, b.future));
+        // this will start the Post-Termination Exercise Period
+        termination_date := some(now)
+    }
+}
+
+view getBalances() : balances {
+    var response : balances = calculateBalance();
+    return response
+}

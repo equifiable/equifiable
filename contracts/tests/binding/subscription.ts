@@ -39,6 +39,9 @@ const payBill_arg_to_mich = (): att.Micheline => {
 const cancelSubscription_arg_to_mich = (): att.Micheline => {
     return att.unit_mich;
 }
+const view_getStatus_arg_to_mich = (id: att.Address): att.Micheline => {
+    return id.to_mich();
+}
 export class Subscription {
     address: string | undefined;
     constructor(address: string | undefined = undefined) {
@@ -95,6 +98,13 @@ export class Subscription {
     async get_cancelSubscription_param(params: Partial<ex.Parameters>): Promise<att.CallParameter> {
         if (this.address != undefined) {
             return await ex.get_call_param(this.address, "cancelSubscription", cancelSubscription_arg_to_mich(), params);
+        }
+        throw new Error("Contract not initialised");
+    }
+    async view_getStatus(id: att.Address, params: Partial<ex.Parameters>): Promise<boolean | undefined> {
+        if (this.address != undefined) {
+            const mich = await ex.exec_view(this.get_address(), "getStatus", view_getStatus_arg_to_mich(id), params);
+            return mich.value ? att.mich_to_bool(mich.value) : undefined;
         }
         throw new Error("Contract not initialised");
     }

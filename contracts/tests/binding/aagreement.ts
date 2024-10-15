@@ -40,7 +40,7 @@ const retrieveExpiredShares_arg_to_mich = (): att.Micheline => {
 const view_getBalances_arg_to_mich = (): att.Micheline => {
     return att.unit_mich;
 }
-export class Stk_agreement {
+export class Aagreement {
     address: string | undefined;
     constructor(address: string | undefined = undefined) {
         this.address = address;
@@ -61,7 +61,7 @@ export class Stk_agreement {
         Date,
         att.Nat
     ]>, post_termination_exercise_window: att.Nat, params: Partial<ex.Parameters>) {
-        const address = (await ex.deploy("./src/stk_agreement.arl", {
+        const address = (await ex.deploy("./src/aagreement.arl", {
             share_address: share_address.to_mich(),
             recipient: recipient.to_mich(),
             company_address: company_address.to_mich(),
@@ -217,4 +217,4 @@ export class Stk_agreement {
         OPTION_IS_NONE: att.string_to_mich("\"OPTION_IS_NONE\"")
     };
 }
-export const stk_agreement = new Stk_agreement();
+export const aagreement = new Aagreement();

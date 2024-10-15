@@ -21,6 +21,13 @@ export const agreement__balances_mich_type: att.MichelineType = att.pair_array_t
     att.prim_annot_to_mich_type("nat", ["%available"]),
     att.prim_annot_to_mich_type("nat", ["%exercised"])
 ], []);
+export const agreement__executions_key_mich_type: att.MichelineType = att.prim_annot_to_mich_type("timestamp", []);
+export const agreement__executions_value_mich_type: att.MichelineType = att.prim_annot_to_mich_type("nat", []);
+export type agreement__executions_container = Array<[
+    Date,
+    att.Nat
+]>;
+export const agreement__executions_container_mich_type: att.MichelineType = att.pair_annot_to_mich_type("map", att.prim_annot_to_mich_type("timestamp", []), att.prim_annot_to_mich_type("nat", []), []);
 const setPrice_arg_to_mich = (newPrice: att.Tez): att.Micheline => {
     return newPrice.to_mich();
 }
