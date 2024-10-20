@@ -7,7 +7,9 @@ archetype agreement(
     strike_price : tez,
     vesting : list<date * nat>,
     post_termination_exercise_window : nat,
-    start_date : date
+    start_date : date,
+    contract_type: string,
+    agreement_type: string
 )
 
 record balances {granted : nat; future : nat; available : nat; exercised : nat}
@@ -59,17 +61,20 @@ entry execute(amount : nat) {
     called by recipient
     require {
         r1 : not isExpired() otherwise "Expired";
-        r2: transferred = amount*strike_price
     }
     effect {
         var b : balances = calculateBalance();
 
         do_fail_if(amount > b.available, "NotEnoughOptionsAvailable");
 
+        if (agreement_type = "SOP" or agreement_type = "BSPCE") then begin
+            do_fail_if(transferred <> amount*strike_price, "InsufficientAmount");
+            transfer transferred to company_address
+        end;
+
         transfer 0tz to share_address call %transfer<address * address * nat>((self_address, recipient, amount));
 
         // TODO: accept other currencies
-        transfer transferred to company_address;
         exercised_tokens += amount;
         executions.add({
             executed_at = now;

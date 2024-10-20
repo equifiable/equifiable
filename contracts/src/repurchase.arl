@@ -4,7 +4,8 @@ archetype repurchase(
     start_date : date,
     end_date : date,
     price : tez,
-    number_total_shares : nat
+    number_total_shares : nat,
+    contract_type: string
 )
 
 variable number_purchased : nat = 0

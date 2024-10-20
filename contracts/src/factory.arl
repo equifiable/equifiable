@@ -25,13 +25,14 @@ entry create(
     expiration_date : date, 
     strike_price : tez,
     vesting : list<date * nat>,
-    post_termination_exercise_window : nat) {
+    post_termination_exercise_window : nat,
+    agreement_type: string) {
     called by company_address
     require {
-        r1 : transferred = newAgreementPrice otherwise "InsufficientTransfer"
+        r1 : transferred = newAgreementPrice otherwise "InsufficientTransfer";
+        r2: agreement_type = "SOP" or agreement_type = "RSU" or agreement_type = "BSPCE"
     }
     effect {
-        // Create agreement
         const agreement_op_address : (operation * address) = create_contract(agreement, none, 0tz, {
             share_address = share_address;
             recipient = recipient;
@@ -40,7 +41,9 @@ entry create(
             strike_price = strike_price;
             vesting = vesting;
             start_date = start_date;
-            post_termination_exercise_window = post_termination_exercise_window
+            post_termination_exercise_window = post_termination_exercise_window;
+            agreement_type = agreement_type;
+            contract_type = "agreement"
         });
         operations := [agreement_op_address[0]];
 
@@ -67,7 +70,7 @@ entry createRepurchase(
     called by company_address
 
     require {
-        r2 : transferred = price*number_shares + newRepurchasePrice otherwise "InsufficientTransfer"
+        r3 : transferred = price*number_shares + newRepurchasePrice otherwise "InsufficientTransfer"
     }
 
     effect {
@@ -78,7 +81,8 @@ entry createRepurchase(
             end_date = end_date;
             start_date = start_date;
             price = price;
-            number_total_shares = number_shares
+            number_total_shares = number_shares;
+            contract_type = "repurchase"
         });
         operations := [repurchase_op_address[0]];
         
