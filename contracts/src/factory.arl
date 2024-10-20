@@ -1,11 +1,19 @@
-archetype factory(owner : address, price : tez)
+archetype factory(owner : address, newAgreementPrice : tez, newRepurchasePrice : tez)
 
 import "agreement.arl"
+import "repurchase.arl"
 
-entry setPrice(newPrice : tez) {
+entry setNewAgreementPrice(newPrice : tez) {
     called by owner
     effect {
-        price := newPrice
+        newAgreementPrice := newPrice
+    }
+}
+
+entry setNewRepurchasePrice(newPrice : tez) {
+    called by owner
+    effect {
+        newRepurchasePrice := newPrice
     }
 }
 
@@ -13,13 +21,14 @@ entry create(
     share_address : address, 
     recipient : address, 
     company_address : address, 
+    start_date : date, 
     expiration_date : date, 
     strike_price : tez,
     vesting : list<date * nat>,
     post_termination_exercise_window : nat) {
     called by company_address
     require {
-        r1 : transferred = price otherwise "InsufficientTransfer"
+        r1 : transferred = newAgreementPrice otherwise "InsufficientTransfer"
     }
     effect {
         // Create agreement
@@ -30,6 +39,7 @@ entry create(
             expiration_date = expiration_date;
             strike_price = strike_price;
             vesting = vesting;
+            start_date = start_date;
             post_termination_exercise_window = post_termination_exercise_window
         });
         operations := [agreement_op_address[0]];
@@ -43,5 +53,36 @@ entry create(
         
         // Transfer the required fee
         transfer transferred to owner;
+    }
+}
+
+entry createRepurchase(
+    company_address : address, 
+    share_address : address, 
+    start_date : date,
+    end_date : date,
+    price : tez,
+    number_shares : nat,
+){
+    called by company_address
+
+    require {
+        r2 : transferred = price*number_shares + newRepurchasePrice otherwise "InsufficientTransfer"
+    }
+
+    effect {
+        // Create repurchase with price*number_shares tezos
+        const repurchase_op_address : (operation * address) = create_contract(repurchase, none, price*number_shares, {
+            share_address = share_address;
+            company_address = company_address;
+            end_date = end_date;
+            start_date = start_date;
+            price = price;
+            number_total_shares = number_shares
+        });
+        operations := [repurchase_op_address[0]];
+        
+        // Transfer the required fee
+        transfer newRepurchasePrice to owner;
     }
 }

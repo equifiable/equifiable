@@ -7,8 +7,6 @@ run-docker:
 init:
 	octez-client --endpoint https://rpc.ghostnet.teztnets.com config update
 	octez-client import secret key myself unencrypted:$(PRIVATE_KEY)
-	octez-client remember contract contact1 $(CONTACT1_KEY)
-	octez-client remember contract contact2 $(CONTACT2_KEY)
 	completium-cli import privatekey $(PRIVATE_KEY) as myself
 
 build-js:

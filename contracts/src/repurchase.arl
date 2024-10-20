@@ -1,0 +1,23 @@
+archetype repurchase(
+    company_address : address, 
+    share_address : address, 
+    start_date : date,
+    end_date : date,
+    price : tez,
+    number_total_shares : nat
+)
+
+variable number_purchased : nat = 0
+
+entry sell(number_shares : nat) {
+    require {
+        isTerminated : number_shares + number_purchased < number_total_shares = false otherwise "TooManyShares";
+        isValid : (now >= start_date) and (now <= end_date)
+    }
+    effect {
+        const transfer_amount = number_shares*price;
+        transfer 0tz to share_address call %transfer<address * address * nat>((caller, company_address, number_shares));
+        transfer transfer_amount to company_address;
+        number_purchased += number_shares;
+    }
+}

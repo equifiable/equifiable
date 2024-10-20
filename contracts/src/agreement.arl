@@ -3,9 +3,11 @@ archetype agreement(
     recipient : address, 
     company_address : address, 
     expiration_date : date, 
+    start_date : date, 
     strike_price : tez,
     vesting : list<date * nat>,
-    post_termination_exercise_window : nat
+    post_termination_exercise_window : nat,
+    start_date : date
 )
 
 record balances {granted : nat; future : nat; available : nat; exercised : nat}
